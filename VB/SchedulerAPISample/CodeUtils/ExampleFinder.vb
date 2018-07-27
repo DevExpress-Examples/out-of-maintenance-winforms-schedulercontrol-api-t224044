@@ -35,7 +35,7 @@ Namespace SchedulerAPISample
             Dim matches = Regex.Matches(sourceCode, RegexRegionPattern, RegexOptions.Singleline)
 
             For Each match In matches
-                Dim lines() As String = match.ToString().Split(New String() { ControlChars.CrLf }, StringSplitOptions.None)
+                Dim lines() As String = match.ToString().Split(New String() {ControlChars.CrLf, ControlChars.Cr, ControlChars.Lf}, StringSplitOptions.None)
 
                 If lines.Length <= 2 Then
                     Continue For
