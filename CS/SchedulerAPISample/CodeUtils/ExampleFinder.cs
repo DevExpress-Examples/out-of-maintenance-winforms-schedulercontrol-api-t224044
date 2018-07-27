@@ -40,7 +40,7 @@ namespace SchedulerAPISample
 
             foreach (var match in matches)
             {
-                string[] lines = match.ToString().Split(new string[] { "\r\n" }, StringSplitOptions.None);
+                string[] lines = match.ToString().Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 
                 if (lines.Length <= 2)
                     continue;
