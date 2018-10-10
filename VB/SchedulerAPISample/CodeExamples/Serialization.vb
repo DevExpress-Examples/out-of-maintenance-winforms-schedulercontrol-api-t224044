@@ -16,11 +16,11 @@ Namespace SchedulerAPISample.CodeExamples
 
         Private Shared Sub AppointmentDeserialization(ByVal scheduler As SchedulerControl)
 '            #Region "#AppointmentDeserialization"
-            scheduler.Storage.Appointments.Clear()
+            scheduler.DataStorage.Appointments.Clear()
             Dim xmlAppointment As String = "<Appointment Version=""1"" Start=""01/13/2016 04:22:00"" " & ControlChars.CrLf & _
 "End=""01/13/2016 05:53:00"" Label=""5"" ResourceId=""3"" Status=""2"" Subject=""Meet Andrew Miller"" />"
-            Dim objAppointment As Appointment = AppointmentXmlPersistenceHelper.ObjectFromXml(scheduler.Storage.Appointments, xmlAppointment)
-            scheduler.Storage.Appointments.Add(objAppointment)
+            Dim objAppointment As Appointment = AppointmentXmlPersistenceHelper.ObjectFromXml(scheduler.DataStorage.Appointments, xmlAppointment)
+            scheduler.DataStorage.Appointments.Add(objAppointment)
             scheduler.Start = New Date(2016, 1, 13)
 '            #End Region ' #AppointmentDeserialization
         End Sub

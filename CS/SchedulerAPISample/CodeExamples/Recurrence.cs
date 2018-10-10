@@ -7,8 +7,8 @@ namespace SchedulerAPISample.CodeExamples {
     class Recurrence {
         static void RecurrenceRuleAction(SchedulerControl scheduler) {
             #region #RecurrenceRule
-            scheduler.Storage.Appointments.Clear();
-            Appointment apt = scheduler.Storage.CreateAppointment(AppointmentType.Pattern);
+            scheduler.DataStorage.Appointments.Clear();
+            Appointment apt = scheduler.DataStorage.CreateAppointment(AppointmentType.Pattern);
             apt.Start = DateTime.Today.AddHours(3);
             apt.End = apt.Start.AddHours(2);
             apt.Subject = "TEST";
@@ -22,7 +22,7 @@ namespace SchedulerAPISample.CodeExamples {
 
             string s = DevExpress.XtraScheduler.iCalendar.iCalendarHelper.ExtractRecurrenceRule(apt.RecurrenceInfo);
             apt.Description = "RRULE:" + s + Environment.NewLine;
-            scheduler.Storage.Appointments.Add(apt);
+            scheduler.DataStorage.Appointments.Add(apt);
             apt.Description += apt.RecurrenceInfo.ToXml();
             #endregion #RecurrenceRule
         }
@@ -42,8 +42,8 @@ namespace SchedulerAPISample.CodeExamples {
             string tail = " />";
             string recurrenceXmlString = (head + startText + endText + weekDays +
                 id + occurrenceCount + periodicity + range + type + version + tail).Replace("'", "\"");
-            scheduler.Storage.Appointments.Clear();
-            Appointment apt = scheduler.Storage.CreateAppointment(AppointmentType.Pattern);
+            scheduler.DataStorage.Appointments.Clear();
+            Appointment apt = scheduler.DataStorage.CreateAppointment(AppointmentType.Pattern);
             apt.Start = DateTime.Today.AddHours(3);
             apt.End = apt.Start.AddHours(2);
             apt.Subject = "Recurrence From XML";
@@ -54,7 +54,7 @@ namespace SchedulerAPISample.CodeExamples {
             IRecurrenceInfo rec = DevExpress.XtraScheduler.Xml.RecurrenceInfoXmlPersistenceHelper.ObjectFromXml(recurrenceXmlString);
 
             apt.Description = recurrenceXmlString + Environment.NewLine + String.Format("Type: {0}",rec.Type);
-            scheduler.Storage.Appointments.Add(apt);
+            scheduler.DataStorage.Appointments.Add(apt);
             #endregion #RecurrenceFromXml
         }
     }

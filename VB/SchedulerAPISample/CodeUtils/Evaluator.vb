@@ -82,7 +82,7 @@ Namespace SchedulerAPISample
                 Try
                     methInfo.Invoke(Nothing, New Object() { evaluationParameter})
                 Catch e1 As Exception
-                    Return False ' an error
+                    Return e1 IsNot Nothing ' an error
                 End Try
                 Return True
             End If

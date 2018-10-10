@@ -20,6 +20,7 @@ namespace SchedulerAPISample
         private string m_RecurrenceInfo;
         private string m_ReminderInfo;
         private object m_OwnerId;
+        private string m_DataFieldOne;
 
 
         public DateTime StartTime { get { return m_Start; } set { m_Start = value; } }
@@ -34,6 +35,7 @@ namespace SchedulerAPISample
         public string RecurrenceInfo { get { return m_RecurrenceInfo; } set { m_RecurrenceInfo = value; } }
         public string ReminderInfo { get { return m_ReminderInfo; } set { m_ReminderInfo = value; } }
         public object OwnerId { get { return m_OwnerId; } set { m_OwnerId = value; } }
+        public string DataFieldOne { get { return m_DataFieldOne; } set { m_DataFieldOne = value; } }
 
         public CustomAppointment()
         {
@@ -46,9 +48,13 @@ namespace SchedulerAPISample
     {
         private string m_name;
         private int m_res_id;
+        private string m_PostCode;
+        private string m_Address;
 
         public string Name { get { return m_name; } set { m_name = value; } }
         public int ResID { get { return m_res_id; } set { m_res_id = value; } }
+        public string PostCode { get { return m_PostCode; } set { m_PostCode = value; } }
+        public string Address { get { return m_Address; } set { m_Address = value; } }
 
         public CustomResource()
         {

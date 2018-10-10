@@ -28,11 +28,11 @@ namespace SchedulerAPISample
             InitHelper.InitResources(CustomResourceCollection);
             InitHelper.InitAppointments(CustomEventList, CustomResourceCollection);
 
-            ResourceMappingInfo mappingsResource = this.schedulerStorage1.Resources.Mappings;
+            ResourceMappingInfo mappingsResource = this.schedulerDataStorage1.Resources.Mappings;
             mappingsResource.Id = "ResID";
             mappingsResource.Caption = "Name";
 
-            AppointmentMappingInfo mappingsAppointment = this.schedulerStorage1.Appointments.Mappings;
+            AppointmentMappingInfo mappingsAppointment = this.schedulerDataStorage1.Appointments.Mappings;
             mappingsAppointment.Start = "StartTime";
             mappingsAppointment.End = "EndTime";
             mappingsAppointment.Subject = "Subject";
@@ -46,8 +46,8 @@ namespace SchedulerAPISample
             mappingsAppointment.Status = "Status";
             mappingsAppointment.Type = "EventType";
 
-            this.schedulerStorage1.Resources.DataSource = CustomResourceCollection;
-            this.schedulerStorage1.Appointments.DataSource = CustomEventList;
+            this.schedulerDataStorage1.Resources.DataSource = CustomResourceCollection;
+            this.schedulerDataStorage1.Appointments.DataSource = CustomEventList;
 
             this.schedulerControl1.Start = DateTime.Now;
         }

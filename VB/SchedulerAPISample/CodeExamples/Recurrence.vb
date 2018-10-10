@@ -7,8 +7,8 @@ Namespace SchedulerAPISample.CodeExamples
 	Friend Class Recurrence
 		Private Shared Sub RecurrenceRuleAction(ByVal scheduler As SchedulerControl)
 '			#Region "#RecurrenceRule"
-			scheduler.Storage.Appointments.Clear()
-			Dim apt As Appointment = scheduler.Storage.CreateAppointment(AppointmentType.Pattern)
+			scheduler.DataStorage.Appointments.Clear()
+			Dim apt As Appointment = scheduler.DataStorage.CreateAppointment(AppointmentType.Pattern)
 			apt.Start = Date.Today.AddHours(3)
 			apt.End = apt.Start.AddHours(2)
 			apt.Subject = "TEST"
@@ -22,7 +22,7 @@ Namespace SchedulerAPISample.CodeExamples
 
 			Dim s As String = DevExpress.XtraScheduler.iCalendar.iCalendarHelper.ExtractRecurrenceRule(apt.RecurrenceInfo)
 			apt.Description = "RRULE:" & s & Environment.NewLine
-			scheduler.Storage.Appointments.Add(apt)
+			scheduler.DataStorage.Appointments.Add(apt)
 			apt.Description += apt.RecurrenceInfo.ToXml()
 '			#End Region ' #RecurrenceRule
 		End Sub
@@ -41,8 +41,8 @@ Namespace SchedulerAPISample.CodeExamples
 			Dim version As String = String.Format("Version = '{0}' ", 1)
 			Dim tail As String = " />"
 			Dim recurrenceXmlString As String = (head & startText & endText & weekDays & id & occurrenceCount & periodicity & range & type & version & tail).Replace("'", """")
-			scheduler.Storage.Appointments.Clear()
-			Dim apt As Appointment = scheduler.Storage.CreateAppointment(AppointmentType.Pattern)
+			scheduler.DataStorage.Appointments.Clear()
+			Dim apt As Appointment = scheduler.DataStorage.CreateAppointment(AppointmentType.Pattern)
 			apt.Start = Date.Today.AddHours(3)
 			apt.End = apt.Start.AddHours(2)
 			apt.Subject = "Recurrence From XML"
@@ -53,7 +53,7 @@ Namespace SchedulerAPISample.CodeExamples
 			Dim rec As IRecurrenceInfo = DevExpress.XtraScheduler.Xml.RecurrenceInfoXmlPersistenceHelper.ObjectFromXml(recurrenceXmlString)
 
 			apt.Description = recurrenceXmlString & Environment.NewLine & String.Format("Type: {0}",rec.Type)
-			scheduler.Storage.Appointments.Add(apt)
+			scheduler.DataStorage.Appointments.Add(apt)
 '			#End Region ' #RecurrenceFromXml
 		End Sub
 

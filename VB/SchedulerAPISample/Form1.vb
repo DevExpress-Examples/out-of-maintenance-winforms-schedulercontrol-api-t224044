@@ -1,13 +1,9 @@
 ﻿Imports DevExpress.XtraEditors
 Imports DevExpress.XtraRichEdit
-Imports DevExpress.XtraScheduler
 Imports DevExpress.XtraTab
 Imports DevExpress.XtraTreeList
 Imports DevExpress.XtraTreeList.Columns
-Imports System
-Imports System.Collections.Generic
 Imports System.IO
-Imports System.Windows.Forms
 
 Namespace SchedulerAPISample
     Partial Public Class Form1
@@ -212,9 +208,11 @@ Namespace SchedulerAPISample
         Me.ClientSize = New System.Drawing.Size(1212, 655)
         Me.Controls.Add(Me.verticalSplitContainerControl1)
         Me.Name = "Form1"
-        CType(Me.horizontalSplitContainerControl1,System.ComponentModel.ISupportInitialize).EndInit
-        Me.horizontalSplitContainerControl1.ResumeLayout(false)
-        CType(Me.xtraTabControl1,System.ComponentModel.ISupportInitialize).EndInit
+            Me.StartPosition = FormStartPosition.CenterScreen
+            CType(Me.horizontalSplitContainerControl1, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.horizontalSplitContainerControl1.ResumeLayout(False)
+            Me.Text = "WinForms SchedulerControl API"
+            CType(Me.xtraTabControl1,System.ComponentModel.ISupportInitialize).EndInit
         Me.xtraTabControl1.ResumeLayout(false)
         Me.xtraTabPage1.ResumeLayout(false)
         Me.xtraTabPage2.ResumeLayout(false)
