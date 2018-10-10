@@ -17,11 +17,11 @@ namespace SchedulerAPISample.CodeExamples {
 
         static void AppointmentDeserialization(SchedulerControl scheduler) {
             #region #AppointmentDeserialization
-            scheduler.Storage.Appointments.Clear();
+            scheduler.DataStorage.Appointments.Clear();
             string xmlAppointment = @"<Appointment Version=""1"" Start=""01/13/2016 04:22:00"" 
 End=""01/13/2016 05:53:00"" Label=""5"" ResourceId=""3"" Status=""2"" Subject=""Meet Andrew Miller"" />";
-            Appointment objAppointment = AppointmentXmlPersistenceHelper.ObjectFromXml(scheduler.Storage.Appointments, xmlAppointment);
-            scheduler.Storage.Appointments.Add(objAppointment);
+            Appointment objAppointment = AppointmentXmlPersistenceHelper.ObjectFromXml(scheduler.DataStorage.Appointments, xmlAppointment);
+            scheduler.DataStorage.Appointments.Add(objAppointment);
             scheduler.Start = new DateTime(2016, 1, 13);
             #endregion #AppointmentDeserialization
         }

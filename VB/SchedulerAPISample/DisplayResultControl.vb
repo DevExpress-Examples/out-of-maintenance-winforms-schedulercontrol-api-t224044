@@ -27,11 +27,11 @@ Namespace SchedulerAPISample
             InitHelper.InitResources(CustomResourceCollection)
             InitHelper.InitAppointments(CustomEventList, CustomResourceCollection)
 
-            Dim mappingsResource As ResourceMappingInfo = Me.schedulerStorage1.Resources.Mappings
+            Dim mappingsResource As ResourceMappingInfo = Me.schedulerDataStorage1.Resources.Mappings
             mappingsResource.Id = "ResID"
             mappingsResource.Caption = "Name"
 
-            Dim mappingsAppointment As AppointmentMappingInfo = Me.schedulerStorage1.Appointments.Mappings
+            Dim mappingsAppointment As AppointmentMappingInfo = Me.schedulerDataStorage1.Appointments.Mappings
             mappingsAppointment.Start = "StartTime"
             mappingsAppointment.End = "EndTime"
             mappingsAppointment.Subject = "Subject"
@@ -45,8 +45,8 @@ Namespace SchedulerAPISample
             mappingsAppointment.Status = "Status"
             mappingsAppointment.Type = "EventType"
 
-            Me.schedulerStorage1.Resources.DataSource = CustomResourceCollection
-            Me.schedulerStorage1.Appointments.DataSource = CustomEventList
+            Me.schedulerDataStorage1.Resources.DataSource = CustomResourceCollection
+            Me.schedulerDataStorage1.Appointments.DataSource = CustomEventList
 
             Me.schedulerControl1.Start = Date.Now
         End Sub

@@ -18,6 +18,7 @@ Namespace SchedulerAPISample
         Private m_RecurrenceInfo As String
         Private m_ReminderInfo As String
         Private m_OwnerId As Object
+        Private m_DataFieldOne As String
 
 
         Public Property StartTime() As Date
@@ -117,6 +118,15 @@ Namespace SchedulerAPISample
             End Set
         End Property
 
+        Public Property DataFieldOne() As String
+            Get
+                Return m_DataFieldOne
+            End Get
+            Set(ByVal value As String)
+                m_DataFieldOne = value
+            End Set
+        End Property
+
         Public Sub New()
         End Sub
     End Class
@@ -126,6 +136,8 @@ Namespace SchedulerAPISample
     Public Class CustomResource
         Private m_name As String
         Private m_res_id As Integer
+        Private m_PostCode As String
+        Private m_Address As String
 
         Public Property Name() As String
             Get
@@ -141,6 +153,22 @@ Namespace SchedulerAPISample
             End Get
             Set(ByVal value As Integer)
                 m_res_id = value
+            End Set
+        End Property
+        Public Property PostCode() As String
+            Get
+                Return m_PostCode
+            End Get
+            Set(ByVal value As String)
+                m_PostCode = value
+            End Set
+        End Property
+        Public Property Address() As String
+            Get
+                Return m_Address
+            End Get
+            Set(ByVal value As String)
+                m_Address = value
             End Set
         End Property
 

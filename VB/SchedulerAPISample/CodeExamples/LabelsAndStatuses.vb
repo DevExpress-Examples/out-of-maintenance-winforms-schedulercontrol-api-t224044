@@ -42,7 +42,7 @@ Namespace SchedulerAPISample.CodeExamples
 
         Shared Sub ChangingLabelColorSchemeAction(ByVal scheduler As SchedulerControl)
             '			#Region "#ChangingLabelColorScheme"
-            Dim labelStorage As IAppointmentLabelStorage = scheduler.Storage.Appointments.Labels
+            Dim labelStorage As IAppointmentLabelStorage = scheduler.DataStorage.Appointments.Labels
             For Each label As IAppointmentLabel In labelStorage
                 Dim appLabel As AppointmentLabel = TryCast(label, AppointmentLabel)
                 If appLabel IsNot Nothing Then
@@ -61,7 +61,7 @@ Namespace SchedulerAPISample.CodeExamples
 
         Private Shared Sub CustomLabelsAndStatusesAction(ByVal scheduler As SchedulerControl)
             '            #Region "#CustomLabelsAndStatuses"
-            scheduler.Storage.Appointments.Clear()
+            scheduler.DataStorage.Appointments.Clear()
 
             Dim IssueList() As String = {"Consultation", "Treatment", "X-Ray"}
             Dim IssueColorList() As Color = {Color.Ivory, Color.Pink, Color.Plum}
@@ -69,7 +69,7 @@ Namespace SchedulerAPISample.CodeExamples
             Dim PaymentColorStatuses() As Color = {Color.Green, Color.Red}
 
 
-            Dim labelStorage As IAppointmentLabelStorage = scheduler.Storage.Appointments.Labels
+            Dim labelStorage As IAppointmentLabelStorage = scheduler.DataStorage.Appointments.Labels
             labelStorage.Clear()
             Dim count As Integer = IssueList.Length
             For i As Integer = 0 To count - 1
@@ -77,13 +77,13 @@ Namespace SchedulerAPISample.CodeExamples
                 label.SetColor(IssueColorList(i))
                 labelStorage.Add(label)
             Next i
-            Dim statusColl As AppointmentStatusCollection = scheduler.Storage.Appointments.Statuses
-            statusColl.Clear()
+            Dim statuses As IAppointmentStatusStorage = scheduler.DataStorage.Appointments.Statuses
+            statuses.Clear()
             count = PaymentStatuses.Length
             For i As Integer = 0 To count - 1
-                Dim status As AppointmentStatus = statusColl.CreateNewStatus(i, PaymentStatuses(i), PaymentStatuses(i))
+                Dim status As IAppointmentStatus = statuses.CreateNewStatus(i, PaymentStatuses(i), PaymentStatuses(i))
                 status.SetBrush(New SolidBrush(PaymentColorStatuses(i)))
-                statusColl.Add(status)
+                statuses.Add(status)
             Next i
             '            #End Region ' #CustomLabelsAndStatuses
         End Sub

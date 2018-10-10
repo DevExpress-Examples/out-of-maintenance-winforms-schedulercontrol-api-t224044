@@ -9,7 +9,7 @@ namespace SchedulerAPISample.CodeExamples {
         static void SelectIntervalWithResourceUnspecified(SchedulerControl scheduler) {
             #region #SelectIntervalWithResourceUnspecified
             scheduler.CustomDrawTimeCell += scheduler_CustomDrawTimeCell_1;
-            //scheduler.Storage.Appointments.Clear();
+            //scheduler.DataStorage.Appointments.Clear();
             scheduler.ActiveView.SetSelection(new TimeInterval(DateTime.Now, new TimeSpan(2, 40, 0)), ResourceEmpty.Resource);
             #endregion #SelectIntervalWithResourceUnspecified
         }
@@ -31,7 +31,7 @@ namespace SchedulerAPISample.CodeExamples {
         static void SelectIntervalWithSpecifiedResource(SchedulerControl scheduler) {
             #region #SelectIntervalWithSpecifiedResource
             scheduler.CustomDrawTimeCell += scheduler_CustomDrawTimeCell_2;
-            //scheduler.Storage.Appointments.Clear();
+            //scheduler.DataStorage.Appointments.Clear();
             scheduler.ActiveView.GroupType = SchedulerGroupType.Resource;
             scheduler.ActiveView.SetSelection(new TimeInterval(DateTime.Now, new TimeSpan(2, 40, 0)), scheduler.ActiveView.GetResources()[1]);
             #endregion #SelectIntervalWithSpecifiedResource

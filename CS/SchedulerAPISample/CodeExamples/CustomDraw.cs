@@ -4,13 +4,10 @@ using System;
 using System.Drawing;
 using System.Linq;
 
-namespace SchedulerAPISample.CodeExamples
-{
-    class CustomDraw
-    {
+namespace SchedulerAPISample.CodeExamples {
+    class CustomDraw {
 
-        static void CustomDrawAppointmentEvent(SchedulerControl scheduler)
-        {
+        static void CustomDrawAppointmentEvent(SchedulerControl scheduler) {
             #region #CustomDrawAppointmentEvent
             scheduler.CustomDrawAppointment += scheduler_CustomDrawAppointment;
             scheduler.ActiveView.LayoutChanged();
@@ -18,10 +15,8 @@ namespace SchedulerAPISample.CodeExamples
         }
 
         #region #@CustomDrawAppointmentEvent
-        public static void scheduler_CustomDrawAppointment(object sender, CustomDrawObjectEventArgs e)
-        {
-            if (((SchedulerControl)sender).ActiveView is DayView)
-            {
+        public static void scheduler_CustomDrawAppointment(object sender, CustomDrawObjectEventArgs e) {
+            if (((SchedulerControl)sender).ActiveView is DayView) {
                 AppointmentViewInfo viewInfo = e.ObjectInfo as AppointmentViewInfo;
                 // Get DevExpress images.
                 Image im = DevExpress.Images.ImageResourceCache.Default.GetImage("images/actions/add_16x16.png");
@@ -33,8 +28,7 @@ namespace SchedulerAPISample.CodeExamples
                 e.Cache.Graphics.DrawImage(im, imageBounds);
 
                 int statusDelta = 0;
-                for (int i = 0; i < viewInfo.StatusItems.Count; i++)
-                {
+                for (int i = 0; i < viewInfo.StatusItems.Count; i++) {
                     AppointmentViewInfoStatusItem statusItem = viewInfo.StatusItems[i] as AppointmentViewInfoStatusItem;
                     // Fill the status bar.
                     e.Cache.FillRectangle(statusItem.BackgroundViewInfo.Brush, statusItem.BackgroundViewInfo.Bounds);
@@ -47,13 +41,12 @@ namespace SchedulerAPISample.CodeExamples
                 // Draw the appointment caption text.
                 e.Cache.DrawString(viewInfo.DisplayText.Trim(), viewInfo.Appearance.Font,
                     viewInfo.Appearance.GetForeBrush(e.Cache), mainContentBounds, StringFormat.GenericDefault);
-                SizeF subjSize = e.Graphics.MeasureString(viewInfo.DisplayText.Trim(), viewInfo.Appearance.Font, mainContentBounds.Width);
+                SizeF subjSize = e.Cache.Graphics.MeasureString(viewInfo.DisplayText.Trim(), viewInfo.Appearance.Font, mainContentBounds.Width);
                 int lineYposition = (int)subjSize.Height;
 
                 Rectangle descriptionLocation = new Rectangle(mainContentBounds.X, mainContentBounds.Y + lineYposition,
                     mainContentBounds.Width, mainContentBounds.Height - lineYposition);
-                if (viewInfo.Appointment.Description.Trim() != "")
-                {
+                if (viewInfo.Appointment.Description.Trim() != "") {
                     // Draw the line above the appointment description.
                     e.Cache.Graphics.DrawLine(viewInfo.Appearance.GetForePen(e.Cache), descriptionLocation.Location,
                         new Point(descriptionLocation.X + descriptionLocation.Width, descriptionLocation.Y));
@@ -66,8 +59,7 @@ namespace SchedulerAPISample.CodeExamples
         }
         #endregion #@CustomDrawAppointmentEvent
 
-        static void CustomDrawAppointmentBackgroundEvent(SchedulerControl scheduler)
-        {
+        static void CustomDrawAppointmentBackgroundEvent(SchedulerControl scheduler) {
             #region #CustomDrawAppointmentBackgroundEvent
             scheduler.CustomDrawAppointmentBackground += scheduler_CustomDrawAppointmentBackground;
             scheduler.ActiveView.LayoutChanged();
@@ -75,8 +67,7 @@ namespace SchedulerAPISample.CodeExamples
         }
 
         #region #@CustomDrawAppointmentBackgroundEvent
-        public static void scheduler_CustomDrawAppointmentBackground(object sender, CustomDrawObjectEventArgs e)
-        {
+        public static void scheduler_CustomDrawAppointmentBackground(object sender, CustomDrawObjectEventArgs e) {
             AppointmentViewInfo viewInfo = e.ObjectInfo as AppointmentViewInfo;
             // Specify the ratio of a completed task to the entire task.
             double completenessRatio = 0.25 * ((int)(viewInfo.Appointment.ResourceId) % 4);
@@ -88,33 +79,28 @@ namespace SchedulerAPISample.CodeExamples
             // Indicate that no default drawing is required.
             e.Handled = true;
         }
-        static Rectangle CalculateEntireAppointmentBounds(AppointmentViewInfo viewInfo)
-        {
+        static Rectangle CalculateEntireAppointmentBounds(AppointmentViewInfo viewInfo) {
             int leftOffset = 0;
             int rightOffset = 0;
             double scale = viewInfo.Bounds.Width / viewInfo.Interval.Duration.TotalMilliseconds;
-            if (!viewInfo.HasLeftBorder)
-            {
+            if (!viewInfo.HasLeftBorder) {
                 double hidden = (viewInfo.Interval.Start - viewInfo.AppointmentInterval.Start).TotalMilliseconds;
                 leftOffset = (int)(hidden * scale);
             }
-            if (!viewInfo.HasRightBorder)
-            {
+            if (!viewInfo.HasRightBorder) {
                 double hidden = (viewInfo.AppointmentInterval.End - viewInfo.Interval.End).TotalMilliseconds;
                 rightOffset = (int)(hidden * scale);
             }
             Rectangle bounds = viewInfo.InnerBounds;
             return Rectangle.FromLTRB(bounds.Left - leftOffset, bounds.Y, bounds.Right + rightOffset, bounds.Bottom);
         }
-        static void DrawBackGroundCore(DevExpress.Utils.Drawing.GraphicsCache cache, Rectangle bounds, double completenessRatio)
-        {
+        static void DrawBackGroundCore(DevExpress.Utils.Drawing.GraphicsCache cache, Rectangle bounds, double completenessRatio) {
             Brush brush1 = new SolidBrush(Color.LightGray);
             cache.FillRectangle(brush1, new Rectangle(bounds.X, bounds.Y, (int)(bounds.Width * completenessRatio), bounds.Height));
         }
         #endregion #@CustomDrawAppointmentBackgroundEvent
 
-        static void CustomDrawDayHeaderEvent(SchedulerControl scheduler)
-        {
+        static void CustomDrawDayHeaderEvent(SchedulerControl scheduler) {
             #region #CustomDrawDayHeaderEvent
             scheduler.CustomDrawDayHeader += scheduler_CustomDrawDayHeader;
             scheduler.ActiveViewType = SchedulerViewType.FullWeek;
@@ -122,8 +108,7 @@ namespace SchedulerAPISample.CodeExamples
             #endregion #CustomDrawDayHeaderEvent
         }
         #region #@CustomDrawDayHeaderEvent
-        public static void scheduler_CustomDrawDayHeader(object sender, CustomDrawObjectEventArgs e)
-        {
+        public static void scheduler_CustomDrawDayHeader(object sender, CustomDrawObjectEventArgs e) {
             DayHeader header = e.ObjectInfo as DayHeader;
             // Draw the outer rectangle.
             e.Cache.FillRectangle(new System.Drawing.Drawing2D.LinearGradientBrush(e.Bounds,
@@ -141,8 +126,7 @@ namespace SchedulerAPISample.CodeExamples
         }
         #endregion #@CustomDrawDayHeaderEvent
 
-        static void CustomDrawDayOfWeekHeaderEvent(SchedulerControl scheduler)
-        {
+        static void CustomDrawDayOfWeekHeaderEvent(SchedulerControl scheduler) {
             #region #CustomDrawDayOfWeekHeaderEvent
             scheduler.CustomDrawDayOfWeekHeader += scheduler_CustomDrawDayOfWeekHeader;
             scheduler.ActiveViewType = SchedulerViewType.Month;
@@ -150,8 +134,7 @@ namespace SchedulerAPISample.CodeExamples
             #endregion #CustomDrawDayOfWeekHeaderEvent
         }
         #region #@CustomDrawDayOfWeekHeaderEvent
-        public static void scheduler_CustomDrawDayOfWeekHeader(object sender, CustomDrawObjectEventArgs e)
-        {
+        public static void scheduler_CustomDrawDayOfWeekHeader(object sender, CustomDrawObjectEventArgs e) {
             DayOfWeekHeader header = e.ObjectInfo as DayOfWeekHeader;
             // Draw the outer rectangle.
             e.Cache.FillRectangle(new System.Drawing.Drawing2D.LinearGradientBrush(e.Bounds,
@@ -169,8 +152,7 @@ namespace SchedulerAPISample.CodeExamples
         }
         #endregion #@CustomDrawDayOfWeekHeaderEvent
 
-        static void CustomDrawDayViewAllDayAreaEvent(SchedulerControl scheduler)
-        {
+        static void CustomDrawDayViewAllDayAreaEvent(SchedulerControl scheduler) {
             #region #CustomDrawDayViewAllDayAreaEvent
             scheduler.CustomDrawDayViewAllDayArea += scheduler_CustomDrawDayViewAllDayArea;
             scheduler.ActiveViewType = SchedulerViewType.Day;
@@ -179,12 +161,11 @@ namespace SchedulerAPISample.CodeExamples
             #endregion #CustomDrawDayViewAllDayAreaEvent
         }
         #region #@CustomDrawDayViewAllDayAreaEvent
-        public static void scheduler_CustomDrawDayViewAllDayArea(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e)
-        {
+        public static void scheduler_CustomDrawDayViewAllDayArea(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e) {
             AllDayAreaCell cell = (AllDayAreaCell)e.ObjectInfo;
             Resource resource = cell.Resource;
             TimeInterval interval = cell.Interval;
-            AppointmentBaseCollection apts = ((SchedulerControl)sender).Storage.GetAppointments(interval);
+            AppointmentBaseCollection apts = ((SchedulerControl)sender).DataStorage.GetAppointments(interval);
             // Specify what precentage of the appointment duration should be painted.
             float percent = CalcCurrentWorkTimeLoad(apts, interval, resource);
             Brush brush;
@@ -203,8 +184,7 @@ namespace SchedulerAPISample.CodeExamples
             e.Cache.DrawString(string.Format("{0:P}", percent), cell.Appearance.Font, Brushes.Black, e.Bounds, format);
             e.Handled = true;
         }
-        private static float CalcCurrentWorkTimeLoad(AppointmentBaseCollection apts, TimeInterval interval, Resource resource)
-        {
+        private static float CalcCurrentWorkTimeLoad(AppointmentBaseCollection apts, TimeInterval interval, Resource resource) {
             AppointmentBaseCollection aptsByResource = new AppointmentBaseCollection();
             var aptQuery = apts.Where(a => a.ResourceId.Equals(resource.Id));
             aptsByResource.AddRange(aptQuery.ToList());
@@ -215,8 +195,7 @@ namespace SchedulerAPISample.CodeExamples
         }
         #endregion #@CustomDrawDayViewAllDayAreaEvent
 
-        static void CustomDrawDayViewTimeRulerEvent(SchedulerControl scheduler)
-        {
+        static void CustomDrawDayViewTimeRulerEvent(SchedulerControl scheduler) {
             #region #CustomDrawDayViewTimeRulerEvent
             scheduler.CustomDrawDayViewTimeRuler += scheduler_CustomDrawDayViewTimeRuler;
             scheduler.ActiveView.LayoutChanged();
@@ -224,15 +203,12 @@ namespace SchedulerAPISample.CodeExamples
         }
 
         #region #@CustomDrawDayViewTimeRulerEvent
-        public static void scheduler_CustomDrawDayViewTimeRuler(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e)
-        {
+        public static void scheduler_CustomDrawDayViewTimeRuler(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e) {
             TimeRulerViewInfo info = e.ObjectInfo as TimeRulerViewInfo;
             // Clear all captions.
-            foreach (var item in info.Items)
-            {
+            foreach (var item in info.Items) {
                 ViewInfoTextItem viewInfoText = item as ViewInfoTextItem;
-                if (viewInfoText != null)
-                {
+                if (viewInfoText != null) {
                     viewInfoText.Text = string.Empty;
                 }
             }
@@ -247,8 +223,7 @@ namespace SchedulerAPISample.CodeExamples
         }
         #endregion #@CustomDrawDayViewTimeRulerEvent
 
-        static void CustomDrawGroupSeparator(SchedulerControl scheduler)
-        {
+        static void CustomDrawGroupSeparator(SchedulerControl scheduler) {
             #region #CustomDrawGroupSeparatorEvent
             scheduler.CustomDrawGroupSeparator += scheduler_CustomDrawGroupSeparator;
             scheduler.GroupType = SchedulerGroupType.Resource;
@@ -257,8 +232,7 @@ namespace SchedulerAPISample.CodeExamples
         }
 
         #region #@CustomDrawGroupSeparatorEvent
-        public static void scheduler_CustomDrawGroupSeparator(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e)
-        {
+        public static void scheduler_CustomDrawGroupSeparator(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e) {
             e.DrawDefault();
             Image im = Image.FromFile("image.png");
             Rectangle imageBounds = new Rectangle(e.Bounds.X - (im.Width / 2), e.Bounds.Y, im.Width, im.Height);
@@ -267,8 +241,7 @@ namespace SchedulerAPISample.CodeExamples
         }
         #endregion #@CustomDrawGroupSeparatorEvent
 
-        static void CustomDrawNavigationButton(SchedulerControl scheduler)
-        {
+        static void CustomDrawNavigationButton(SchedulerControl scheduler) {
             #region #CustomDrawNavigationButtonEvent
             scheduler.CustomDrawNavigationButton += scheduler_CustomDrawNavigationButton;
             scheduler.Services.DateTimeNavigation.NavigateBackward();
@@ -276,18 +249,16 @@ namespace SchedulerAPISample.CodeExamples
         }
 
         #region #@CustomDrawNavigationButtonEvent
-        public static void scheduler_CustomDrawNavigationButton(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e)
-        {
+        public static void scheduler_CustomDrawNavigationButton(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e) {
             NavigationButtonNext navButton = e.ObjectInfo as NavigationButtonNext;
             SchedulerControl scheduler = sender as SchedulerControl;
-            SchedulerStorage storage = scheduler.Storage as SchedulerStorage;
+            SchedulerDataStorage storage = scheduler.DataStorage as SchedulerDataStorage;
             // Do not count by resources.
             if (scheduler.GroupType != SchedulerGroupType.None) return;
 
-            if (navButton != null && scheduler != null && storage != null)
-            {
+            if (navButton != null && scheduler != null && storage != null) {
                 // Count appointments within the interval used by the Next navigation button.
-                AppointmentBaseCollection apts = scheduler.Storage.Appointments.Items;
+                AppointmentBaseCollection apts = scheduler.DataStorage.Appointments.Items;
                 TimeSpan aptSearchInterval = scheduler.OptionsView.NavigationButtons.AppointmentSearchInterval;
                 DateTime lastVisibleTime = scheduler.ActiveView.GetVisibleIntervals().Last().End;
                 int aptCount = apts.Where(a => (a.Start > lastVisibleTime) && (a.Start < lastVisibleTime.Add(aptSearchInterval))).Count();
@@ -296,15 +267,14 @@ namespace SchedulerAPISample.CodeExamples
         }
         #endregion #@CustomDrawNavigationButtonEvent
 
-        static void CustomDrawResourceHeader(SchedulerControl scheduler)
-        {
+        static void CustomDrawResourceHeader(SchedulerControl scheduler) {
             #region #CustomDrawResourceHeaderEvent
             // Add information to resources.
-            IResourceStorageBase resStorage = scheduler.Storage.Resources;
-            resStorage.CustomFieldMappings.Add(new ResourceCustomFieldMapping("PostCode", "mPostCode"));
-            resStorage.CustomFieldMappings.Add(new ResourceCustomFieldMapping("Address", "mAddress"));
+            IResourceStorageBase resStorage = scheduler.DataStorage.Resources;
+            resStorage.CustomFieldMappings.Add(new ResourceCustomFieldMapping("PostCode", "PostCode"));
+            resStorage.CustomFieldMappings.Add(new ResourceCustomFieldMapping("Address", "PostCode"));
             resStorage[0].CustomFields["PostCode"] = "16285 Schwedt";
-            resStorage[0].CustomFields["Address"] = "Landhausstraße 52 ";
+            resStorage[0].CustomFields["Address"] = "Landhausstraße 52";
             // Increase default height to fit a multi-line caption.
             scheduler.OptionsView.ResourceHeaders.Height = 50;
             scheduler.GroupType = SchedulerGroupType.Resource;
@@ -313,8 +283,7 @@ namespace SchedulerAPISample.CodeExamples
         }
 
         #region #@CustomDrawResourceHeaderEvent
-        public static void scheduler_CustomDrawResourceHeader(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e)
-        {
+        public static void scheduler_CustomDrawResourceHeader(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e) {
             ResourceHeader header = (ResourceHeader)e.ObjectInfo;
             // Get the resource information from custom fields.
             string postcode = (header.Resource.CustomFields["PostCode"] != null) ? header.Resource.CustomFields["PostCode"].ToString() : String.Empty;
@@ -329,8 +298,7 @@ namespace SchedulerAPISample.CodeExamples
         }
         #endregion #@CustomDrawResourceHeaderEvent
 
-        static void CustomDrawTimeCell(SchedulerControl scheduler)
-        {
+        static void CustomDrawTimeCell(SchedulerControl scheduler) {
             #region #CustomDrawTimeCellEvent
             scheduler.CustomDrawTimeCell += scheduler_CustomDrawTimeCell;
             scheduler.DayView.DayCount = 3;
@@ -339,8 +307,7 @@ namespace SchedulerAPISample.CodeExamples
         }
 
         #region #@CustomDrawTimeCellEvent
-        public static void scheduler_CustomDrawTimeCell(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e)
-        {
+        public static void scheduler_CustomDrawTimeCell(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e) {
             // Get the cell to draw.
             SelectableIntervalViewInfo cell =
                 e.ObjectInfo as SelectableIntervalViewInfo;
@@ -353,8 +320,7 @@ namespace SchedulerAPISample.CodeExamples
         }
         #endregion #@CustomDrawTimeCellEvent
 
-        public static void CustomDrawWeekViewTopLeftCorner(SchedulerControl scheduler)
-        {
+        public static void CustomDrawWeekViewTopLeftCorner(SchedulerControl scheduler) {
             #region #CustomDrawWeekViewTopLeftCornerEvent
             scheduler.ActiveViewType = SchedulerViewType.Timeline;
             scheduler.GroupType = SchedulerGroupType.Date;
@@ -364,8 +330,7 @@ namespace SchedulerAPISample.CodeExamples
         }
 
         #region #@CustomDrawWeekViewTopLeftCornerEvent
-        public static void scheduler_CustomDrawWeekViewTopLeftCorner(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e)
-        {
+        public static void scheduler_CustomDrawWeekViewTopLeftCorner(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e) {
             e.DrawDefault();
             UpperLeftCorner objectToDraw = e.ObjectInfo as UpperLeftCorner;
             string text = "Employee";
@@ -405,7 +370,7 @@ namespace SchedulerAPISample.CodeExamples
                         boundsText = Rectangle.Inflate(timeIndicatorItem.Bounds, 0, 5);
                         boundsText.Offset(((int)e.Graphics.ClipBounds.Width / 2), -10);
                     }
-                    e.Cache.DrawString(info.Interval.Start.ToString(), scheduler.Appearance.HeaderCaption.Font, new SolidBrush(Color.Red), boundsText, 
+                    e.Cache.DrawString(info.Interval.Start.ToString(), scheduler.Appearance.HeaderCaption.Font, new SolidBrush(Color.Red), boundsText,
                         scheduler.Appearance.HeaderCaption.GetStringFormat());
                 }
             }
@@ -417,7 +382,7 @@ namespace SchedulerAPISample.CodeExamples
             #region #CustomDrawFlyOutEvent
             scheduler.ActiveViewType = SchedulerViewType.FullWeek;
             scheduler.CustomizeAppointmentFlyout += scheduler_CustomizeAppointmentFlyout;
-            scheduler.CustomDrawAppointmentFlyoutSubject+= scheduler_CustomDrawAppointmentFlyoutSubject;
+            scheduler.CustomDrawAppointmentFlyoutSubject += scheduler_CustomDrawAppointmentFlyoutSubject;
             #endregion #CustomDrawFlyOutEvent
         }
 
@@ -436,7 +401,7 @@ namespace SchedulerAPISample.CodeExamples
         public static void scheduler_CustomDrawAppointmentFlyoutSubject(object sender, CustomDrawAppointmentFlyoutSubjectEventArgs e) {
             e.Cache.FillRectangle(Brushes.White, e.Bounds);
             e.DrawStatusDefault();
-            e.Cache.DrawString("Please note", new Font("Verdana", 12f), Brushes.Blue, 
+            e.Cache.DrawString("Please note", new Font("Verdana", 12f), Brushes.Blue,
                 new Rectangle(e.Bounds.X + 50, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height),
                 StringFormat.GenericTypographic);
             e.Handled = true;

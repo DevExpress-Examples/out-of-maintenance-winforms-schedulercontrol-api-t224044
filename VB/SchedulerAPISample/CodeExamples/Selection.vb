@@ -9,7 +9,7 @@ Namespace SchedulerAPISample.CodeExamples
         Private Shared Sub SelectIntervalWithResourceUnspecified(ByVal scheduler As SchedulerControl)
 '            #Region "#SelectIntervalWithResourceUnspecified"
             AddHandler scheduler.CustomDrawTimeCell, AddressOf scheduler_CustomDrawTimeCell_1
-            'scheduler.Storage.Appointments.Clear();
+            'scheduler.DataStorage.Appointments.Clear();
             scheduler.ActiveView.SetSelection(New TimeInterval(Date.Now, New TimeSpan(2, 40, 0)), ResourceEmpty.Resource)
 '            #End Region ' #SelectIntervalWithResourceUnspecified
         End Sub
@@ -30,7 +30,7 @@ Namespace SchedulerAPISample.CodeExamples
         Private Shared Sub SelectIntervalWithSpecifiedResource(ByVal scheduler As SchedulerControl)
 '            #Region "#SelectIntervalWithSpecifiedResource"
             AddHandler scheduler.CustomDrawTimeCell, AddressOf scheduler_CustomDrawTimeCell_2
-            'scheduler.Storage.Appointments.Clear();
+            'scheduler.DataStorage.Appointments.Clear();
             scheduler.ActiveView.GroupType = SchedulerGroupType.Resource
             scheduler.ActiveView.SetSelection(New TimeInterval(Date.Now, New TimeSpan(2, 40, 0)), scheduler.ActiveView.GetResources()(1))
 '            #End Region ' #SelectIntervalWithSpecifiedResource

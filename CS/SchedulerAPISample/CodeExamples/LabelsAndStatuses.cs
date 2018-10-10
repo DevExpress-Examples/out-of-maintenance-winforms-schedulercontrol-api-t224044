@@ -43,7 +43,7 @@ namespace SchedulerAPISample.CodeExamples
 
         static void ChangingLabelColorSchemeAction(SchedulerControl scheduler) {
             #region #ChangingLabelColorScheme
-            IAppointmentLabelStorage labelStorage = scheduler.Storage.Appointments.Labels;
+            IAppointmentLabelStorage labelStorage = scheduler.DataStorage.Appointments.Labels;
             foreach (IAppointmentLabel label in labelStorage) {
                 AppointmentLabel appLabel = label as AppointmentLabel;
                 if (appLabel != null) {
@@ -60,7 +60,7 @@ namespace SchedulerAPISample.CodeExamples
 
         static void CustomLabelsAndStatusesAction(SchedulerControl scheduler) {
             #region #CustomLabelsAndStatuses
-            scheduler.Storage.Appointments.Clear();
+            scheduler.DataStorage.Appointments.Clear();
 
             string[] IssueList = { "Consultation", "Treatment", "X-Ray" };
             Color[] IssueColorList = { Color.Ivory, Color.Pink, Color.Plum };
@@ -68,7 +68,7 @@ namespace SchedulerAPISample.CodeExamples
             Color[] PaymentColorStatuses = { Color.Green, Color.Red };
 
 
-            IAppointmentLabelStorage labelStorage = scheduler.Storage.Appointments.Labels;
+            IAppointmentLabelStorage labelStorage = scheduler.DataStorage.Appointments.Labels;
             labelStorage.Clear();
             int count = IssueList.Length;
             for (int i = 0; i < count; i++) {
@@ -76,13 +76,13 @@ namespace SchedulerAPISample.CodeExamples
                 label.SetColor(IssueColorList[i]);
                 labelStorage.Add(label);
             }
-            AppointmentStatusCollection statusColl = scheduler.Storage.Appointments.Statuses;
-            statusColl.Clear();
+            IAppointmentStatusStorage statuses = scheduler.DataStorage.Appointments.Statuses;
+            statuses.Clear();
             count = PaymentStatuses.Length;
             for (int i = 0; i < count; i++) {
-                AppointmentStatus status = statusColl.CreateNewStatus(i, PaymentStatuses[i], PaymentStatuses[i]);
+                IAppointmentStatus status = statuses.CreateNewStatus(i, PaymentStatuses[i], PaymentStatuses[i]);
                 status.SetBrush(new SolidBrush(PaymentColorStatuses[i]));
-                statusColl.Add(status);
+                statuses.Add(status);
             }
             #endregion #CustomLabelsAndStatuses
         }

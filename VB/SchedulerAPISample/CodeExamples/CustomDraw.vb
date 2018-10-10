@@ -39,7 +39,7 @@ Namespace SchedulerAPISample.CodeExamples
                 Next i
                 ' Draw the appointment caption text.
                 e.Cache.DrawString(viewInfo.DisplayText.Trim(), viewInfo.Appearance.Font, viewInfo.Appearance.GetForeBrush(e.Cache), mainContentBounds, StringFormat.GenericDefault)
-                Dim subjSize As SizeF = e.Graphics.MeasureString(viewInfo.DisplayText.Trim(), viewInfo.Appearance.Font, mainContentBounds.Width)
+                Dim subjSize As SizeF = e.Cache.Graphics.MeasureString(viewInfo.DisplayText.Trim(), viewInfo.Appearance.Font, mainContentBounds.Width)
                 Dim lineYposition As Integer = CInt(subjSize.Height)
 
                 Dim descriptionLocation As New Rectangle(mainContentBounds.X, mainContentBounds.Y + lineYposition, mainContentBounds.Width, mainContentBounds.Height - lineYposition)
@@ -152,7 +152,7 @@ Namespace SchedulerAPISample.CodeExamples
             Dim cell As AllDayAreaCell = CType(e.ObjectInfo, AllDayAreaCell)
             Dim resource As Resource = cell.Resource
             Dim interval As TimeInterval = cell.Interval
-            Dim apts As AppointmentBaseCollection = DirectCast(sender, SchedulerControl).Storage.GetAppointments(interval)
+            Dim apts As AppointmentBaseCollection = DirectCast(sender, SchedulerControl).DataStorage.GetAppointments(interval)
             ' Specify what percentage of the appointment duration should be painted.
             Dim percent As Single = CalcCurrentWorkTimeLoad(apts, interval, resource)
             Dim brush As Brush
@@ -242,7 +242,7 @@ Namespace SchedulerAPISample.CodeExamples
         Public Shared Sub scheduler_CustomDrawNavigationButton(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
             Dim navButton As NavigationButtonNext = TryCast(e.ObjectInfo, NavigationButtonNext)
             Dim scheduler As SchedulerControl = TryCast(sender, SchedulerControl)
-            Dim storage As SchedulerStorage = TryCast(scheduler.Storage, SchedulerStorage)
+            Dim storage As ISchedulerStorage = TryCast(scheduler.DataStorage, SchedulerDataStorage)
             ' Do not count by resources.
             If scheduler.GroupType <> SchedulerGroupType.None Then
                 Return
@@ -250,7 +250,7 @@ Namespace SchedulerAPISample.CodeExamples
 
             If navButton IsNot Nothing AndAlso scheduler IsNot Nothing AndAlso storage IsNot Nothing Then
                 ' Count appointments within the interval used by the Next navigation button.
-                Dim apts As AppointmentBaseCollection = scheduler.Storage.Appointments.Items
+                Dim apts As AppointmentBaseCollection = scheduler.DataStorage.Appointments.Items
                 Dim aptSearchInterval As TimeSpan = scheduler.OptionsView.NavigationButtons.AppointmentSearchInterval
                 Dim lastVisibleTime As Date = scheduler.ActiveView.GetVisibleIntervals().Last().End
                 Dim aptCount As Integer = apts.Where(Function(a) (a.Start > lastVisibleTime) AndAlso (a.Start < lastVisibleTime.Add(aptSearchInterval))).Count()
@@ -260,13 +260,13 @@ Namespace SchedulerAPISample.CodeExamples
         #End Region ' #@CustomDrawNavigationButtonEvent
 
         Private Shared Sub CustomDrawResourceHeader(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawResourceHeaderEvent"
+            '            #Region "#CustomDrawResourceHeaderEvent"
             ' Add information to resources.
-            Dim resStorage As IResourceStorageBase = scheduler.Storage.Resources
-            resStorage.CustomFieldMappings.Add(New ResourceCustomFieldMapping("PostCode", "mPostCode"))
-            resStorage.CustomFieldMappings.Add(New ResourceCustomFieldMapping("Address", "mAddress"))
+            Dim resStorage As IResourceStorageBase = scheduler.DataStorage.Resources
+            resStorage.CustomFieldMappings.Add(New ResourceCustomFieldMapping("PostCode", "PostCode"))
+            resStorage.CustomFieldMappings.Add(New ResourceCustomFieldMapping("Address", "Address"))
             resStorage(0).CustomFields("PostCode") = "16285 Schwedt"
-            resStorage(0).CustomFields("Address") = "Landhausstraße 52 "
+            resStorage(0).CustomFields("Address") = "Landhausstraße 52"
             ' Increase default height to fit a multi-line caption.
             scheduler.OptionsView.ResourceHeaders.Height = 50
             scheduler.GroupType = SchedulerGroupType.Resource

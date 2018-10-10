@@ -16,14 +16,14 @@ namespace SchedulerAPISample.CodeExamples
             scheduler.OptionsCustomization.AllowAppointmentConflicts = AppointmentConflictsMode.Custom;
             scheduler.AllowAppointmentConflicts += Scheduler_AllowAppointmentConflicts;
 
-            scheduler.Storage.Appointments.Clear();
+            scheduler.DataStorage.Appointments.Clear();
             scheduler.GroupType = SchedulerGroupType.Resource;
-            Appointment apt1 = scheduler.Storage.Appointments.CreateAppointment(AppointmentType.Normal, DateTime.Now, DateTime.Now.AddHours(2));
-            apt1.ResourceId = scheduler.Storage.Resources[0].Id;
-            scheduler.Storage.Appointments.Add(apt1);
-            Appointment apt2 = scheduler.Storage.Appointments.CreateAppointment(AppointmentType.Normal, DateTime.Now, DateTime.Now.AddHours(2));
-            apt2.ResourceId = scheduler.Storage.Resources[1].Id;
-            scheduler.Storage.Appointments.Add(apt2);
+            Appointment apt1 = scheduler.DataStorage.Appointments.CreateAppointment(AppointmentType.Normal, DateTime.Now, DateTime.Now.AddHours(2));
+            apt1.ResourceId = scheduler.DataStorage.Resources[0].Id;
+            scheduler.DataStorage.Appointments.Add(apt1);
+            Appointment apt2 = scheduler.DataStorage.Appointments.CreateAppointment(AppointmentType.Normal, DateTime.Now, DateTime.Now.AddHours(2));
+            apt2.ResourceId = scheduler.DataStorage.Resources[1].Id;
+            scheduler.DataStorage.Appointments.Add(apt2);
             #endregion #AllowAppointmentConflictsEvent
         }
         #region #@AllowAppointmentConflictsEvent
@@ -69,7 +69,7 @@ namespace SchedulerAPISample.CodeExamples
             if (isConflict)
             {
                 Rectangle rect = e.Bounds;
-                Brush brush = e.Cache.GetSolidBrush(scheduler.Storage.Appointments.Labels.GetById(apt.LabelKey).GetColor());
+                Brush brush = e.Cache.GetSolidBrush(scheduler.DataStorage.Appointments.Labels.GetById(apt.LabelKey).GetColor());
                 e.Graphics.FillRectangle(brush, rect);
                 rect.Inflate(-3, -3);
                 HatchBrush hatchBrush = new HatchBrush(HatchStyle.WideUpwardDiagonal, Color.Red, Color.White);

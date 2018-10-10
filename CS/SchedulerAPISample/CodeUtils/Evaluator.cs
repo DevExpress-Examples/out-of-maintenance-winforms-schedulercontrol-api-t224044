@@ -108,9 +108,9 @@ namespace SchedulerAPISample
                 {
                     methInfo.Invoke(null, new object[] { evaluationParameter});
                 }
-                catch (Exception)
-                {
-                    return false;// an error
+                catch (Exception ex)
+                {                    
+                    return ex == null;// an error // put a breakpoint here to debug code samples
                 }
                 return true;
             }

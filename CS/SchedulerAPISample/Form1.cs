@@ -1,6 +1,5 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraRichEdit;
-using DevExpress.XtraScheduler;
 using DevExpress.XtraTab;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Columns;
@@ -111,6 +110,7 @@ namespace SchedulerAPISample
             // 
             this.richEditControlCS.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Draft;
             this.richEditControlCS.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richEditControlCS.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             this.richEditControlCS.Location = new System.Drawing.Point(0, 0);
             this.richEditControlCS.Name = "richEditControlCS";
             this.richEditControlCS.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
@@ -131,6 +131,7 @@ namespace SchedulerAPISample
             // 
             this.richEditControlVB.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Draft;
             this.richEditControlVB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richEditControlVB.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             this.richEditControlVB.Location = new System.Drawing.Point(0, 0);
             this.richEditControlVB.Name = "richEditControlVB";
             this.richEditControlVB.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
@@ -149,6 +150,7 @@ namespace SchedulerAPISample
             // 
             this.richEditControlCSClass.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Draft;
             this.richEditControlCSClass.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richEditControlCSClass.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             this.richEditControlCSClass.Location = new System.Drawing.Point(0, 0);
             this.richEditControlCSClass.Name = "richEditControlCSClass";
             this.richEditControlCSClass.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
@@ -167,6 +169,7 @@ namespace SchedulerAPISample
             // 
             this.richEditControlVBClass.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Draft;
             this.richEditControlVBClass.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richEditControlVBClass.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             this.richEditControlVBClass.Location = new System.Drawing.Point(0, 0);
             this.richEditControlVBClass.Name = "richEditControlVBClass";
             this.richEditControlVBClass.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
@@ -218,6 +221,8 @@ namespace SchedulerAPISample
             this.ClientSize = new System.Drawing.Size(1212, 655);
             this.Controls.Add(this.verticalSplitContainerControl1);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "WinForms SchedulerControl API";
             ((System.ComponentModel.ISupportInitialize)(this.horizontalSplitContainerControl1)).EndInit();
             this.horizontalSplitContainerControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
