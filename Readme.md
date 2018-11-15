@@ -1,3 +1,21 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [AppointmentConflicts.cs](./CS/SchedulerAPISample/CodeExamples/AppointmentConflicts.cs) (VB: [AppointmentConflicts.vb](./VB/SchedulerAPISample/CodeExamples/AppointmentConflicts.vb))
+* [AppointmentEvents.cs](./CS/SchedulerAPISample/CodeExamples/AppointmentEvents.cs) (VB: [AppointmentEvents.vb](./VB/SchedulerAPISample/CodeExamples/AppointmentEvents.vb))
+* [AppointmentExamples.cs](./CS/SchedulerAPISample/CodeExamples/AppointmentExamples.cs) (VB: [AppointmentExamples.vb](./VB/SchedulerAPISample/CodeExamples/AppointmentExamples.vb))
+* [AppointmentViewInfoCustomizingSamples.cs](./CS/SchedulerAPISample/CodeExamples/AppointmentViewInfoCustomizingSamples.cs) (VB: [AppointmentViewInfoCustomizingSamples.vb](./VB/SchedulerAPISample/CodeExamples/AppointmentViewInfoCustomizingSamples.vb))
+* [CustomDraw.cs](./CS/SchedulerAPISample/CodeExamples/CustomDraw.cs) (VB: [CustomDraw.vb](./VB/SchedulerAPISample/CodeExamples/CustomDraw.vb))
+* [CustomizingVisualElements.cs](./CS/SchedulerAPISample/CodeExamples/CustomizingVisualElements.cs) (VB: [CustomizingVisualElements.vb](./VB/SchedulerAPISample/CodeExamples/CustomizingVisualElements.vb))
+* [LabelsAndStatuses.cs](./CS/SchedulerAPISample/CodeExamples/LabelsAndStatuses.cs) (VB: [LabelsAndStatuses.vb](./VB/SchedulerAPISample/CodeExamples/LabelsAndStatuses.vb))
+* [Recurrence.cs](./CS/SchedulerAPISample/CodeExamples/Recurrence.cs) (VB: [Recurrence.vb](./VB/SchedulerAPISample/CodeExamples/Recurrence.vb))
+* [Selection.cs](./CS/SchedulerAPISample/CodeExamples/Selection.cs) (VB: [Selection.vb](./VB/SchedulerAPISample/CodeExamples/Selection.vb))
+* [Serialization.cs](./CS/SchedulerAPISample/CodeExamples/Serialization.cs) (VB: [Serialization.vb](./VB/SchedulerAPISample/CodeExamples/Serialization.vb))
+* [Services.cs](./CS/SchedulerAPISample/CodeExamples/Services.cs) (VB: [Services.vb](./VB/SchedulerAPISample/CodeExamples/Services.vb))
+* [Time Cell Examples.cs](./CS/SchedulerAPISample/CodeExamples/Time Cell Examples.cs)
+* [TimeRuler.cs](./CS/SchedulerAPISample/CodeExamples/TimeRuler.cs) (VB: [TimeRuler.vb](./VB/SchedulerAPISample/CodeExamples/TimeRuler.vb))
+* [Program.cs](./CS/SchedulerAPISample/Program.cs)
+<!-- default file list end -->
 # WinForms SchedulerControl API
 
 
