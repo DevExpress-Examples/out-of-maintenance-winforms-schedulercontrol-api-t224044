@@ -1,3 +1,13 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [AppointmentAppearance.cs](./CS/SchedulerAPISample/CodeExamples/AppointmentAppearance.cs) (VB: [AppointmentAppearance.vb](./VB/SchedulerAPISample/CodeExamples/AppointmentAppearance.vb))
+* [AppointmentConflicts.cs](./CS/SchedulerAPISample/CodeExamples/AppointmentConflicts.cs) (VB: [AppointmentConflicts.vb](./VB/SchedulerAPISample/CodeExamples/AppointmentConflicts.vb))
+* [CustomDraw.cs](./CS/SchedulerAPISample/CodeExamples/CustomDraw.cs) (VB: [CustomDraw.vb](./VB/SchedulerAPISample/CodeExamples/CustomDraw.vb))
+* [Services.cs](./CS/SchedulerAPISample/CodeExamples/Services.cs) (VB: [Services.vb](./VB/SchedulerAPISample/CodeExamples/Services.vb))
+* [DataObjects.cs](./CS/SchedulerAPISample/SchedulerHelperCode/DataObjects.cs) (VB: [DataObjects.vb](./VB/SchedulerAPISample/SchedulerHelperCode/DataObjects.vb))
+* [InitHelper.cs](./CS/SchedulerAPISample/SchedulerHelperCode/InitHelper.cs) (VB: [InitHelper.vb](./VB/SchedulerAPISample/SchedulerHelperCode/InitHelper.vb))
+<!-- default file list end -->
 # WinForms SchedulerControl API
 
 
