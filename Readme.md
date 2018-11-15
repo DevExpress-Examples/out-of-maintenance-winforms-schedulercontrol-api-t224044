@@ -1,3 +1,16 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [AppointmentAppearance.cs](./CS/SchedulerAPISample/CodeExamples/AppointmentAppearance.cs) (VB: [AppointmentAppearance.vb](./VB/SchedulerAPISample/CodeExamples/AppointmentAppearance.vb))
+* [AppointmentConflicts.cs](./CS/SchedulerAPISample/CodeExamples/AppointmentConflicts.cs) (VB: [AppointmentConflicts.vb](./VB/SchedulerAPISample/CodeExamples/AppointmentConflicts.vb))
+* [AppointmentExamples.cs](./CS/SchedulerAPISample/CodeExamples/AppointmentExamples.cs) (VB: [AppointmentExamples.vb](./VB/SchedulerAPISample/CodeExamples/AppointmentExamples.vb))
+* [CustomDraw.cs](./CS/SchedulerAPISample/CodeExamples/CustomDraw.cs) (VB: [CustomDraw.vb](./VB/SchedulerAPISample/CodeExamples/CustomDraw.vb))
+* [LabelsAndStatuses.cs](./CS/SchedulerAPISample/CodeExamples/LabelsAndStatuses.cs) (VB: [LabelsAndStatuses.vb](./VB/SchedulerAPISample/CodeExamples/LabelsAndStatuses.vb))
+* [Selection.cs](./CS/SchedulerAPISample/CodeExamples/Selection.cs) (VB: [Selection.vb](./VB/SchedulerAPISample/CodeExamples/Selection.vb))
+* [Serialization.cs](./CS/SchedulerAPISample/CodeExamples/Serialization.cs) (VB: [Serialization.vb](./VB/SchedulerAPISample/CodeExamples/Serialization.vb))
+* [Services.cs](./CS/SchedulerAPISample/CodeExamples/Services.cs) (VB: [Services.vb](./VB/SchedulerAPISample/CodeExamples/Services.vb))
+* [TimeRuler.cs](./CS/SchedulerAPISample/CodeExamples/TimeRuler.cs) (VB: [TimeRuler.vb](./VB/SchedulerAPISample/CodeExamples/TimeRuler.vb))
+<!-- default file list end -->
 # WinForms SchedulerControl API
 
 
