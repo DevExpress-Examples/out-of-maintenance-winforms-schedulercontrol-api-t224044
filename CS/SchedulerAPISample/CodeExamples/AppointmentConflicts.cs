@@ -70,10 +70,10 @@ namespace SchedulerAPISample.CodeExamples
             {
                 Rectangle rect = e.Bounds;
                 Brush brush = e.Cache.GetSolidBrush(scheduler.DataStorage.Appointments.Labels.GetById(apt.LabelKey).GetColor());
-                e.Graphics.FillRectangle(brush, rect);
+                e.Cache.FillRectangle(brush, rect);
                 rect.Inflate(-3, -3);
-                HatchBrush hatchBrush = new HatchBrush(HatchStyle.WideUpwardDiagonal, Color.Red, Color.White);
-                e.Graphics.FillRectangle(hatchBrush, rect);
+                using(var _hatchBrush = new HatchBrush(HatchStyle.WideUpwardDiagonal, Color.Red, Color.White))
+                    e.Cache.FillRectangle(_hatchBrush, rect);
                 e.Handled = true;
             }
         }

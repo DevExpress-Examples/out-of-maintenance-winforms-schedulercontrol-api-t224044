@@ -16,12 +16,11 @@ namespace SchedulerAPISample.CodeExamples {
 
         #region #@SelectIntervalWithResourceUnspecified
         public static void scheduler_CustomDrawTimeCell_1(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e) {
-            Brush solidBrush = new SolidBrush(Color.Lime);
             SelectableIntervalViewInfo cell =
                 e.ObjectInfo as SelectableIntervalViewInfo;
             if (cell != null) {
                 if (cell.Selected) {
-                    e.Graphics.FillRectangle(solidBrush, e.Bounds);
+                    e.Cache.FillRectangle(Brushes.Lime, e.Bounds);
                     e.Handled = true;
                 }
             }
@@ -39,12 +38,11 @@ namespace SchedulerAPISample.CodeExamples {
 
         #region #@SelectIntervalWithSpecifiedResource
         public static void scheduler_CustomDrawTimeCell_2(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e) {
-            Brush solidBrush = new SolidBrush(Color.Lime);
             SelectableIntervalViewInfo cell =
                 e.ObjectInfo as SelectableIntervalViewInfo;
             if (cell != null) {
                 if (cell.Selected) {
-                    e.Graphics.FillRectangle(solidBrush, e.Bounds);
+                    e.Cache.FillRectangle(Brushes.Lime, e.Bounds);
                     e.Handled = true;
                 }
             }
@@ -60,12 +58,11 @@ namespace SchedulerAPISample.CodeExamples {
 
         #region #@SelectIntervalUsingService
         public static void scheduler_CustomDrawTimeCell_3(object sender, DevExpress.XtraScheduler.CustomDrawObjectEventArgs e) {
-            Brush solidBrush = new SolidBrush(Color.Lime);
             SelectableIntervalViewInfo cell =
                 e.ObjectInfo as SelectableIntervalViewInfo;
             if (cell != null) {
                 if (cell.Selected) {
-                    e.Graphics.FillRectangle(solidBrush, e.Bounds);
+                    e.Cache.FillRectangle(Brushes.Lime, e.Bounds);
                     e.Handled = true;
                 }
             }
@@ -88,8 +85,8 @@ namespace SchedulerAPISample.CodeExamples {
             if (aptViewInfo.Selected) {
                 e.DrawDefault();
                 Rectangle r = e.Bounds;
-                Brush brRect = aptViewInfo.Status.GetBrush();
-                e.Graphics.DrawRectangle(new Pen(Color.Lime, 4), r);
+                using(var _pen = new Pen(Color.Lime, 4))
+                    e.Cache.DrawRectangle(_pen, r);
                 e.Handled = true;
             }
         }
@@ -113,8 +110,8 @@ namespace SchedulerAPISample.CodeExamples {
             if (aptViewInfo.Selected) {
                 e.DrawDefault();
                 Rectangle r = e.Bounds;
-                Brush brRect = aptViewInfo.Status.GetBrush();
-                e.Graphics.DrawRectangle(new Pen(Color.Lime, 4), r);
+                using(var _pen = new Pen(Color.Lime, 4))
+                    e.Cache.DrawRectangle(_pen, r);
                 e.Handled = true;
             }
         }
@@ -135,8 +132,8 @@ namespace SchedulerAPISample.CodeExamples {
             if (aptViewInfo.Selected) {
                 e.DrawDefault();
                 Rectangle r = e.Bounds;
-                Brush brRect = aptViewInfo.Status.GetBrush();
-                e.Graphics.DrawRectangle(new Pen(Color.Lime, 4), r);
+                using(var _pen = new Pen(Color.Lime, 4))
+                    e.Cache.DrawRectangle(_pen, r);
                 e.Handled = true;
             }
         }

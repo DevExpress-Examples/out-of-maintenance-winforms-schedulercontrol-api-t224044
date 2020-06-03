@@ -4,6 +4,7 @@ Imports DevExpress.XtraScheduler.Drawing
 Imports System
 Imports System.Drawing
 Imports System.Linq
+Imports DevExpress.XtraEditors
 
 Namespace SchedulerAPISample.CodeExamples
     Friend Class CustomizingVisualElements
@@ -37,9 +38,10 @@ Namespace SchedulerAPISample.CodeExamples
         End Sub
 
 #Region "#@InitAppointmentImagesEvent"
+        Private Shared ReadOnly im As Image = Image.FromFile("image.png")
         Public Shared Sub scheduler_InitAppointmentImages(ByVal sender As Object, ByVal e As AppointmentImagesEventArgs)
             Dim info As New AppointmentImageInfo()
-            info.Image = Image.FromFile("image.png")
+            info.Image = im
             e.ImageInfoList.Add(info)
         End Sub
 #End Region ' #@InitAppointmentImagesEvent
@@ -125,22 +127,23 @@ Namespace SchedulerAPISample.CodeExamples
 #End Region ' #@CustomizeMesssageBoxCaptionEvent
 
         Shared Sub AppointmentFlyoutShowingEvent(ByVal scheduler As SchedulerControl)
-'			#Region "#AppointmentFlyoutShowing"
-			AddHandler scheduler.AppointmentFlyoutShowing, AddressOf scheduler_AppointmentFlyoutShowing
-			scheduler.ActiveView.LayoutChanged()
-'			#End Region ' #AppointmentFlyoutShowing
-		End Sub
+            '			#Region "#AppointmentFlyoutShowing"
+            AddHandler scheduler.AppointmentFlyoutShowing, AddressOf scheduler_AppointmentFlyoutShowing
+            scheduler.ActiveView.LayoutChanged()
+            '			#End Region ' #AppointmentFlyoutShowing
+        End Sub
 
-		#Region "#@AppointmentFlyoutShowing"
-		Public Shared Sub scheduler_AppointmentFlyoutShowing(ByVal sender As Object, ByVal e As AppointmentFlyoutShowingEventArgs)
-			Dim myControl As New System.Windows.Forms.Label()
-			myControl.BackColor = Color.LightGreen
-			myControl.Size = New Size(200, 100)
-			myControl.Text = e.FlyoutData.Subject
-			myControl.Font = New Font("Arial", 20)
-			e.Control = myControl
-		End Sub
-		#End Region ' #@AppointmentFlyoutShowing
+#Region "#@AppointmentFlyoutShowing"
+
+        Public Shared Sub scheduler_AppointmentFlyoutShowing(ByVal sender As Object, ByVal e As AppointmentFlyoutShowingEventArgs)
+            Dim myControl = New Label() 'create only once in your real project!
+            myControl.BackColor = Color.LightGreen
+            myControl.Size = New Size(200, 100)
+            myControl.Text = e.FlyoutData.Subject
+            myControl.Font = New Font("Arial", 20)
+            e.Control = myControl
+        End Sub
+#End Region ' #@AppointmentFlyoutShowing
 
 
     End Class

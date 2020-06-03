@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraScheduler;
+﻿using DevExpress.XtraEditors;
+using DevExpress.XtraScheduler;
 using DevExpress.XtraScheduler.Drawing;
 using System;
 using System.Drawing;
@@ -17,10 +18,10 @@ namespace SchedulerAPISample.CodeExamples {
         #region #@InitAppointmentDisplayTextEvent
         public static void scheduler_InitAppointmentDisplayText(object sender, AppointmentDisplayTextEventArgs e) {
             // Display custom text in Day and WorkWeek views only (VerticalAppointmentViewInfo).
-            if (e.ViewInfo is VerticalAppointmentViewInfo) {
+            if(e.ViewInfo is VerticalAppointmentViewInfo) {
                 e.Text = e.Appointment.Subject + "\r\n";
                 e.Text += "------\r\n";
-                if (e.Description != String.Empty) {
+                if(e.Description != String.Empty) {
                     e.Description = string.Empty;
                     e.Text += "Description is hidden";
                 }
@@ -36,9 +37,10 @@ namespace SchedulerAPISample.CodeExamples {
         }
 
         #region #@InitAppointmentImagesEvent
+        readonly static Image im = Image.FromFile("image.png");
         public static void scheduler_InitAppointmentImages(object sender, AppointmentImagesEventArgs e) {
             AppointmentImageInfo info = new AppointmentImageInfo();
-            info.Image = Image.FromFile("image.png");
+            info.Image = im;
             e.ImageInfoList.Add(info);
         }
         #endregion #@InitAppointmentImagesEvent
@@ -55,15 +57,15 @@ namespace SchedulerAPISample.CodeExamples {
         #region #@LayoutViewInfoCustomizingEvent
         public static void scheduler_LayoutViewInfoCustomizing(object sender, LayoutViewInfoCustomizingEventArgs e) {
             string s = e.ViewInfo.GetType().ToString().Substring("DevExpress.XtraScheduler.Drawing.".Length);
-            if (e.Kind == LayoutElementKind.DateHeader) {
+            if(e.Kind == LayoutElementKind.DateHeader) {
                 SchedulerHeader header = e.ViewInfo as SchedulerHeader;
-                if (header != null) header.Caption = s;
+                if(header != null) header.Caption = s;
             }
-            if (e.Kind == LayoutElementKind.Cell) {
+            if(e.Kind == LayoutElementKind.Cell) {
                 SchedulerViewCellBase cell = e.ViewInfo as SchedulerViewCellBase;
-                if (cell != null) cell.Appearance.BackColor = Color.LightYellow;
+                if(cell != null) cell.Appearance.BackColor = Color.LightYellow;
                 SingleWeekCellBase cellWeek = e.ViewInfo as SingleWeekCellBase;
-                if (cellWeek != null) {
+                if(cellWeek != null) {
                     cellWeek.Appearance.BackColor = Color.LightCyan;
                     cellWeek.Header.Caption = s;
                 }
@@ -82,7 +84,7 @@ namespace SchedulerAPISample.CodeExamples {
 
         #region #@CustomizingResourceHeaders
         public static void scheduler_LayoutViewInfoCustomizingResourceHeaders(object sender, LayoutViewInfoCustomizingEventArgs e) {
-            if (e.Kind == LayoutElementKind.ResourceHeader) {
+            if(e.Kind == LayoutElementKind.ResourceHeader) {
                 ResourceHeader header = e.ViewInfo as ResourceHeader;
                 header.Caption = header.Resource.Caption + "\r\nNew long text line";
                 e.ShouldRecalculateLayout = true;
@@ -114,7 +116,7 @@ namespace SchedulerAPISample.CodeExamples {
 
         #region #@CustomizeMesssageBoxCaptionEvent
         public static void scheduler_CustomizeMessageBoxCaption(object sender, CustomizeMessageBoxCaptionEventArgs e) {
-            if (e.CaptionId == DevExpress.XtraScheduler.Localization.SchedulerStringId.Msg_SaveBeforeClose)
+            if(e.CaptionId == DevExpress.XtraScheduler.Localization.SchedulerStringId.Msg_SaveBeforeClose)
                 e.Caption = "Appointment modification";
         }
         #endregion #@CustomizeMesssageBoxCaptionEvent
@@ -126,10 +128,9 @@ namespace SchedulerAPISample.CodeExamples {
             scheduler.ActiveView.LayoutChanged();
             #endregion #AppointmentFlyoutShowing
         }
-
         #region #@AppointmentFlyoutShowing
         public static void scheduler_AppointmentFlyoutShowing(object sender, AppointmentFlyoutShowingEventArgs e) {
-            System.Windows.Forms.Label myControl = new System.Windows.Forms.Label();
+            System.Windows.Forms.Label myControl = new System.Windows.Forms.Label(); //create only once in your real project!
             myControl.BackColor = Color.LightGreen;
             myControl.Size = new Size(200, 100);
             myControl.Text = e.FlyoutData.Subject;

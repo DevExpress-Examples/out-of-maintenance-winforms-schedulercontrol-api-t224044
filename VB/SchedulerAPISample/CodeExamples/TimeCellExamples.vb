@@ -37,17 +37,20 @@ Namespace SchedulerAPISample.CodeExamples
             DrawCellInfo(e)
             e.Handled = True
         End Sub
+        Private Shared ReadOnly textFont As New Font("Tahoma", 10)
         Private Shared Sub DrawCellInfo(ByVal e As CustomDrawObjectEventArgs)
             Dim s As String = e.ObjectInfo.GetType().ToString().Substring("DevExpress.XtraScheduler.Drawing.".Length)
             Dim cell As SchedulerViewCellBase = TryCast(e.ObjectInfo, SchedulerViewCellBase)
             If cell IsNot Nothing Then
-                Dim sf As New StringFormat()
-                sf.Alignment = StringAlignment.Center
-                sf.LineAlignment = StringAlignment.Center
-                e.Cache.DrawString(s, New Font("Tahoma", 10), SystemBrushes.GrayText, cell.Bounds, sf)
+                Using sf = New StringFormat()
+                    sf.Alignment = StringAlignment.Center
+                    sf.LineAlignment = StringAlignment.Center
+                    e.Cache.DrawString(s, textFont, SystemBrushes.GrayText, cell.Bounds, sf)
+                End Using
             End If
         End Sub
 #End Region ' #@TimeCellTypes
+        Private Shared ReadOnly textFont_ As New Font("Tahoma", 8)
 
         Private Shared Sub HorizontalSingleWeekCellType(ByVal scheduler As SchedulerControl)
             '			#Region "#HorizontalSingleWeekCellType"
@@ -66,14 +69,16 @@ Namespace SchedulerAPISample.CodeExamples
             e.DrawDefault()
             Dim cell As HorizontalSingleWeekCell = TryCast(e.ObjectInfo, HorizontalSingleWeekCell)
             If cell IsNot Nothing Then
-                Dim sf As New StringFormat()
-                sf.LineAlignment = StringAlignment.Center
-                e.Cache.DrawRectangle(SystemPens.ActiveBorder, cell.Bounds)
-                If cell.FirstVisible Then
-                    e.Cache.DrawString("First Visible Cell", New Font("Tahoma", 8), Brushes.Blue, cell.Bounds, sf)
-                End If
+                Using sf = New StringFormat()
+                    sf.LineAlignment = StringAlignment.Center
+                    e.Cache.DrawRectangle(SystemPens.ActiveBorder, cell.Bounds)
+                    If cell.FirstVisible Then
+                        e.Cache.DrawString("First Visible Cell", textFont_, Brushes.Blue, cell.Bounds, sf)
+                    End If
+                End Using
             End If
             e.Handled = True
+
         End Sub
 #End Region ' #@HorizontalSingleWeekCellType
     End Class

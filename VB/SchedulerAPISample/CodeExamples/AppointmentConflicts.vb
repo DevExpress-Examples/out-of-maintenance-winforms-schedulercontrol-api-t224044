@@ -66,8 +66,12 @@ Namespace SchedulerAPISample.CodeExamples
                 Dim brush As Brush = e.Cache.GetSolidBrush(scheduler.DataStorage.Appointments.Labels.GetById(apt.LabelKey).GetColor())
                 e.Graphics.FillRectangle(brush, rect)
                 rect.Inflate(-3, -3)
-                Dim hatchBrush As New HatchBrush(HatchStyle.WideUpwardDiagonal, Color.Red, Color.White)
-                e.Graphics.FillRectangle(hatchBrush, rect)
+                e.Cache.FillRectangle(brush, rect)
+                rect.Inflate(-3, -3)
+                Using _hatchBrush = New HatchBrush(HatchStyle.WideUpwardDiagonal, Color.Red, Color.White)
+                    e.Cache.FillRectangle(_hatchBrush, rect)
+                End Using
+
                 e.Handled = True
             End If
         End Sub

@@ -16,11 +16,10 @@ Namespace SchedulerAPISample.CodeExamples
 
         #Region "#@SelectIntervalWithResourceUnspecified"
         Public Shared Sub scheduler_CustomDrawTimeCell_1(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
-            Dim solidBrush As Brush = New SolidBrush(Color.Lime)
             Dim cell As SelectableIntervalViewInfo = TryCast(e.ObjectInfo, SelectableIntervalViewInfo)
             If cell IsNot Nothing Then
                 If cell.Selected Then
-                    e.Graphics.FillRectangle(solidBrush, e.Bounds)
+                    e.Cache.FillRectangle(Brushes.Lime, e.Bounds)
                     e.Handled = True
                 End If
             End If
@@ -38,11 +37,10 @@ Namespace SchedulerAPISample.CodeExamples
 
         #Region "#@SelectIntervalWithSpecifiedResource"
         Public Shared Sub scheduler_CustomDrawTimeCell_2(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
-            Dim solidBrush As Brush = New SolidBrush(Color.Lime)
             Dim cell As SelectableIntervalViewInfo = TryCast(e.ObjectInfo, SelectableIntervalViewInfo)
             If cell IsNot Nothing Then
                 If cell.Selected Then
-                    e.Graphics.FillRectangle(solidBrush, e.Bounds)
+                    e.Cache.FillRectangle(Brushes.Lime, e.Bounds)
                     e.Handled = True
                 End If
             End If
@@ -58,11 +56,10 @@ Namespace SchedulerAPISample.CodeExamples
 
         #Region "#@SelectIntervalUsingService"
         Public Shared Sub scheduler_CustomDrawTimeCell_3(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
-            Dim solidBrush As Brush = New SolidBrush(Color.Lime)
             Dim cell As SelectableIntervalViewInfo = TryCast(e.ObjectInfo, SelectableIntervalViewInfo)
             If cell IsNot Nothing Then
                 If cell.Selected Then
-                    e.Graphics.FillRectangle(solidBrush, e.Bounds)
+                    e.Cache.FillRectangle(Brushes.Lime, e.Bounds)
                     e.Handled = True
                 End If
             End If
@@ -86,8 +83,10 @@ Namespace SchedulerAPISample.CodeExamples
             If aptViewInfo.Selected Then
                 e.DrawDefault()
                 Dim r As Rectangle = e.Bounds
-                Dim brRect As Brush = aptViewInfo.Status.GetBrush()
-                e.Graphics.DrawRectangle(New Pen(Color.Lime, 4), r)
+                Using _pen = New Pen(Color.Lime, 4)
+                    e.Cache.DrawRectangle(_pen, r)
+                End Using
+
                 e.Handled = True
             End If
         End Sub
@@ -112,8 +111,10 @@ Namespace SchedulerAPISample.CodeExamples
             If aptViewInfo.Selected Then
                 e.DrawDefault()
                 Dim r As Rectangle = e.Bounds
-                Dim brRect As Brush = aptViewInfo.Status.GetBrush()
-                e.Graphics.DrawRectangle(New Pen(Color.Lime, 4), r)
+                Using _pen = New Pen(Color.Lime, 4)
+                    e.Cache.DrawRectangle(_pen, r)
+                End Using
+
                 e.Handled = True
             End If
         End Sub
@@ -135,8 +136,10 @@ Namespace SchedulerAPISample.CodeExamples
             If aptViewInfo.Selected Then
                 e.DrawDefault()
                 Dim r As Rectangle = e.Bounds
-                Dim brRect As Brush = aptViewInfo.Status.GetBrush()
-                e.Graphics.DrawRectangle(New Pen(Color.Lime, 4), r)
+                Using _pen = New Pen(Color.Lime, 4)
+                    e.Cache.DrawRectangle(_pen, r)
+                End Using
+
                 e.Handled = True
             End If
         End Sub

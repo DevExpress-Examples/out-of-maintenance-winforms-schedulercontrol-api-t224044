@@ -37,14 +37,16 @@ namespace SchedulerAPISample.CodeExamples {
             DrawCellInfo(e);
             e.Handled = true;
         }
+        readonly static Font textFont = new Font("Tahoma", 10);
         private static void DrawCellInfo(CustomDrawObjectEventArgs e) {
             string s = e.ObjectInfo.GetType().ToString().Substring("DevExpress.XtraScheduler.Drawing.".Length);
             SchedulerViewCellBase cell = e.ObjectInfo as SchedulerViewCellBase;
             if (cell != null) {
-                StringFormat sf = new StringFormat();
-                sf.Alignment = StringAlignment.Center;
-                sf.LineAlignment = StringAlignment.Center;
-                e.Cache.DrawString(s, new Font("Tahoma", 10), SystemBrushes.GrayText, cell.Bounds, sf);
+                using(var sf = new StringFormat()) {
+                    sf.Alignment = StringAlignment.Center;
+                    sf.LineAlignment = StringAlignment.Center;
+                    e.Cache.DrawString(s, textFont, SystemBrushes.GrayText, cell.Bounds, sf);
+                }
             }
         }
         #endregion #@TimeCellTypes
@@ -62,15 +64,17 @@ namespace SchedulerAPISample.CodeExamples {
         }
 
         #region #@HorizontalSingleWeekCellType
+        readonly static Font textFont_ = new Font("Tahoma", 8);
         public static void scheduler_CustomDrawTimeCell_01(object sender, CustomDrawObjectEventArgs e) {
             e.DrawDefault();
             HorizontalSingleWeekCell cell = e.ObjectInfo as HorizontalSingleWeekCell;
             if (cell != null) {
-                StringFormat sf = new StringFormat();
-                sf.LineAlignment = StringAlignment.Center;
-                e.Cache.DrawRectangle(SystemPens.ActiveBorder, cell.Bounds);
-                if (cell.FirstVisible) e.Cache.DrawString("First Visible Cell", new Font("Tahoma", 8),
-                        Brushes.Blue, cell.Bounds, sf);
+                using(var sf = new StringFormat()) {
+                    sf.LineAlignment = StringAlignment.Center;
+                    e.Cache.DrawRectangle(SystemPens.ActiveBorder, cell.Bounds);
+                    if(cell.FirstVisible) e.Cache.DrawString("First Visible Cell", textFont_,
+                           Brushes.Blue, cell.Bounds, sf);
+                }
             }
             e.Handled = true;
         }

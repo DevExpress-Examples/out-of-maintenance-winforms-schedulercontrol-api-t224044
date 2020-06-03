@@ -2,29 +2,29 @@
 Imports DevExpress.XtraScheduler.Drawing
 Imports System
 Imports System.Drawing
+Imports System.Drawing.Drawing2D
 Imports System.Linq
 
 Namespace SchedulerAPISample.CodeExamples
     Friend Class CustomDraw
 
         Private Shared Sub CustomDrawAppointmentEvent(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawAppointmentEvent"
+            '            #Region "#CustomDrawAppointmentEvent"
             AddHandler scheduler.CustomDrawAppointment, AddressOf scheduler_CustomDrawAppointment
             scheduler.ActiveView.LayoutChanged()
-'            #End Region ' #CustomDrawAppointmentEvent
+            '            #End Region ' #CustomDrawAppointmentEvent
         End Sub
 
-        #Region "#@CustomDrawAppointmentEvent"
+#Region "#@CustomDrawAppointmentEvent"
         Public Shared Sub scheduler_CustomDrawAppointment(ByVal sender As Object, ByVal e As CustomDrawObjectEventArgs)
-            If TypeOf DirectCast(sender, SchedulerControl).ActiveView Is DayView Then
+            If TypeOf CType(sender, SchedulerControl).ActiveView Is DayView Then
                 Dim viewInfo As AppointmentViewInfo = TryCast(e.ObjectInfo, AppointmentViewInfo)
-                ' Get DevExpress images.
-                Dim im As Image = DevExpress.Images.ImageResourceCache.Default.GetImage("images/actions/add_16x16.png")
 
+                Dim im As Image = DevExpress.Images.ImageResourceCache.Default.GetImage("images/actions/add_16x16.png")
                 Dim imageBounds As New Rectangle(viewInfo.InnerBounds.X, viewInfo.InnerBounds.Y, im.Width, im.Height)
                 Dim mainContentBounds As New Rectangle(viewInfo.InnerBounds.X, viewInfo.InnerBounds.Y + im.Width + 1, viewInfo.InnerBounds.Width, viewInfo.InnerBounds.Height - im.Height - 1)
                 ' Draw image in the appointment.
-                e.Cache.Graphics.DrawImage(im, imageBounds)
+                e.Cache.DrawImage(im, imageBounds)
 
                 Dim statusDelta As Integer = 0
                 For i As Integer = 0 To viewInfo.StatusItems.Count - 1
@@ -32,36 +32,39 @@ Namespace SchedulerAPISample.CodeExamples
                     ' Fill the status bar.
                     e.Cache.FillRectangle(statusItem.BackgroundViewInfo.Brush, statusItem.BackgroundViewInfo.Bounds)
                     e.Cache.FillRectangle(statusItem.ForegroundViewInfo.Brush, statusItem.ForegroundViewInfo.Bounds)
-                    ' Draw the satus bar rectangle.
-                    e.Cache.DrawRectangle(New Pen(statusItem.ForegroundViewInfo.BorderColor), statusItem.BackgroundViewInfo.Bounds)
-                    e.Cache.DrawRectangle(New Pen(statusItem.ForegroundViewInfo.BorderColor), statusItem.ForegroundViewInfo.Bounds)
+                    ' Draw the status bar rectangle.
+                    Using _pen = New Pen(statusItem.ForegroundViewInfo.BorderColor)
+                        e.Cache.DrawRectangle(_pen, statusItem.BackgroundViewInfo.Bounds)
+                        e.Cache.DrawRectangle(_pen, statusItem.ForegroundViewInfo.Bounds)
+                    End Using
                     statusDelta = Math.Max(statusDelta, statusItem.Bounds.Width)
                 Next i
                 ' Draw the appointment caption text.
                 e.Cache.DrawString(viewInfo.DisplayText.Trim(), viewInfo.Appearance.Font, viewInfo.Appearance.GetForeBrush(e.Cache), mainContentBounds, StringFormat.GenericDefault)
-                Dim subjSize As SizeF = e.Cache.Graphics.MeasureString(viewInfo.DisplayText.Trim(), viewInfo.Appearance.Font, mainContentBounds.Width)
+                Dim subjSize As SizeF = e.Graphics.MeasureString(viewInfo.DisplayText.Trim(), viewInfo.Appearance.Font, mainContentBounds.Width)
                 Dim lineYposition As Integer = CInt(subjSize.Height)
 
                 Dim descriptionLocation As New Rectangle(mainContentBounds.X, mainContentBounds.Y + lineYposition, mainContentBounds.Width, mainContentBounds.Height - lineYposition)
                 If viewInfo.Appointment.Description.Trim() <> "" Then
                     ' Draw the line above the appointment description.
-                    e.Cache.Graphics.DrawLine(viewInfo.Appearance.GetForePen(e.Cache), descriptionLocation.Location, New Point(descriptionLocation.X + descriptionLocation.Width, descriptionLocation.Y))
+                    e.Cache.DrawLine(viewInfo.Appearance.GetForePen(e.Cache), descriptionLocation.Location, New Point(descriptionLocation.X + descriptionLocation.Width, descriptionLocation.Y))
                     ' Draw the appointment description text.
                     e.Cache.DrawString(viewInfo.Appointment.Description.Trim(), viewInfo.Appearance.Font, viewInfo.Appearance.GetForeBrush(e.Cache), descriptionLocation, StringFormat.GenericTypographic)
                 End If
                 e.Handled = True
             End If
+
         End Sub
-        #End Region ' #@CustomDrawAppointmentEvent
+#End Region ' #@CustomDrawAppointmentEvent
 
         Private Shared Sub CustomDrawAppointmentBackgroundEvent(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawAppointmentBackgroundEvent"
+            '            #Region "#CustomDrawAppointmentBackgroundEvent"
             AddHandler scheduler.CustomDrawAppointmentBackground, AddressOf scheduler_CustomDrawAppointmentBackground
             scheduler.ActiveView.LayoutChanged()
-'            #End Region ' #CustomDrawAppointmentBackgroundEvent
+            '            #End Region ' #CustomDrawAppointmentBackgroundEvent
         End Sub
 
-        #Region "#@CustomDrawAppointmentBackgroundEvent"
+#Region "#@CustomDrawAppointmentBackgroundEvent"
         Public Shared Sub scheduler_CustomDrawAppointmentBackground(ByVal sender As Object, ByVal e As CustomDrawObjectEventArgs)
             Dim viewInfo As AppointmentViewInfo = TryCast(e.ObjectInfo, AppointmentViewInfo)
             ' Specify the ratio of a completed task to the entire task.
@@ -90,64 +93,69 @@ Namespace SchedulerAPISample.CodeExamples
             Return Rectangle.FromLTRB(bounds.Left - leftOffset, bounds.Y, bounds.Right + rightOffset, bounds.Bottom)
         End Function
         Private Shared Sub DrawBackGroundCore(ByVal cache As DevExpress.Utils.Drawing.GraphicsCache, ByVal bounds As Rectangle, ByVal completenessRatio As Double)
-            Dim brush1 As Brush = New SolidBrush(Color.LightGray)
-            cache.FillRectangle(brush1, New Rectangle(bounds.X, bounds.Y, CInt((bounds.Width * completenessRatio)), bounds.Height))
+            cache.FillRectangle(Brushes.LightGray, New Rectangle(bounds.X, bounds.Y, CInt((bounds.Width * completenessRatio)), bounds.Height))
         End Sub
-        #End Region ' #@CustomDrawAppointmentBackgroundEvent
+#End Region ' #@CustomDrawAppointmentBackgroundEvent
 
         Private Shared Sub CustomDrawDayHeaderEvent(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawDayHeaderEvent"
+            '            #Region "#CustomDrawDayHeaderEvent"
             AddHandler scheduler.CustomDrawDayHeader, AddressOf scheduler_CustomDrawDayHeader
             scheduler.ActiveViewType = SchedulerViewType.FullWeek
             scheduler.ActiveView.LayoutChanged()
-'            #End Region ' #CustomDrawDayHeaderEvent
+            '            #End Region ' #CustomDrawDayHeaderEvent
         End Sub
-        #Region "#@CustomDrawDayHeaderEvent"
+#Region "#@CustomDrawDayHeaderEvent"
         Public Shared Sub scheduler_CustomDrawDayHeader(ByVal sender As Object, ByVal e As CustomDrawObjectEventArgs)
             Dim header As DayHeader = TryCast(e.ObjectInfo, DayHeader)
             ' Draw the outer rectangle.
-            e.Cache.FillRectangle(New System.Drawing.Drawing2D.LinearGradientBrush(e.Bounds, Color.LightBlue, Color.Blue, System.Drawing.Drawing2D.LinearGradientMode.Vertical), e.Bounds)
+            Using backBrush = New LinearGradientBrush(e.Bounds, Color.LightBlue, Color.Blue, LinearGradientMode.Vertical)
+                e.Cache.FillRectangle(backBrush, e.Bounds)
+            End Using
             Dim innerRect As Rectangle = Rectangle.Inflate(e.Bounds, -2, -2)
             ' Draw the inner rectangle.
-            e.Cache.FillRectangle(New System.Drawing.Drawing2D.LinearGradientBrush(e.Bounds, Color.Blue, Color.LightSkyBlue, System.Drawing.Drawing2D.LinearGradientMode.Vertical), innerRect)
+            Using backBrush = New LinearGradientBrush(e.Bounds, Color.Blue, Color.LightSkyBlue, LinearGradientMode.Vertical)
+                e.Cache.FillRectangle(backBrush, innerRect)
+            End Using
             ' Draw the header caption.
-            e.Cache.DrawString(header.Caption, header.Appearance.HeaderCaption.Font, New SolidBrush(Color.White), innerRect, header.Appearance.HeaderCaption.GetStringFormat())
+            e.Cache.DrawString(header.Caption, header.Appearance.HeaderCaption.Font, Brushes.White, innerRect, header.Appearance.HeaderCaption.GetStringFormat())
             e.Handled = True
-
         End Sub
-        #End Region ' #@CustomDrawDayHeaderEvent
+#End Region ' #@CustomDrawDayHeaderEvent
 
         Private Shared Sub CustomDrawDayOfWeekHeaderEvent(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawDayOfWeekHeaderEvent"
+            '            #Region "#CustomDrawDayOfWeekHeaderEvent"
             AddHandler scheduler.CustomDrawDayOfWeekHeader, AddressOf scheduler_CustomDrawDayOfWeekHeader
             scheduler.ActiveViewType = SchedulerViewType.Month
             scheduler.ActiveView.LayoutChanged()
-'            #End Region ' #CustomDrawDayOfWeekHeaderEvent
+            '            #End Region ' #CustomDrawDayOfWeekHeaderEvent
         End Sub
-        #Region "#@CustomDrawDayOfWeekHeaderEvent"
+#Region "#@CustomDrawDayOfWeekHeaderEvent"
         Public Shared Sub scheduler_CustomDrawDayOfWeekHeader(ByVal sender As Object, ByVal e As CustomDrawObjectEventArgs)
             Dim header As DayOfWeekHeader = TryCast(e.ObjectInfo, DayOfWeekHeader)
             ' Draw the outer rectangle.
-            e.Cache.FillRectangle(New System.Drawing.Drawing2D.LinearGradientBrush(e.Bounds, Color.LightGreen, Color.Green, System.Drawing.Drawing2D.LinearGradientMode.Vertical), e.Bounds)
+            Using backBrush = New LinearGradientBrush(e.Bounds, Color.LightGreen, Color.Green, LinearGradientMode.Vertical)
+                e.Cache.FillRectangle(backBrush, e.Bounds)
+            End Using
             Dim innerRect As Rectangle = Rectangle.Inflate(e.Bounds, -2, -2)
             ' Draw the inner rectangle.
-            e.Cache.FillRectangle(New System.Drawing.Drawing2D.LinearGradientBrush(e.Bounds, Color.Green, Color.LightGreen, System.Drawing.Drawing2D.LinearGradientMode.Vertical), innerRect)
+            Using backBrush = New LinearGradientBrush(e.Bounds, Color.Green, Color.LightGreen, LinearGradientMode.Vertical)
+                e.Cache.FillRectangle(backBrush, innerRect)
+            End Using
             ' Draw the header caption.
-            e.Cache.DrawString(header.Caption, header.Appearance.HeaderCaption.Font, New SolidBrush(Color.White), innerRect, header.Appearance.HeaderCaption.GetStringFormat())
+            e.Cache.DrawString(header.Caption, header.Appearance.HeaderCaption.Font, Brushes.White, innerRect, header.Appearance.HeaderCaption.GetStringFormat())
             e.Handled = True
-
         End Sub
-        #End Region ' #@CustomDrawDayOfWeekHeaderEvent
+#End Region ' #@CustomDrawDayOfWeekHeaderEvent
 
         Private Shared Sub CustomDrawDayViewAllDayAreaEvent(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawDayViewAllDayAreaEvent"
+            '            #Region "#CustomDrawDayViewAllDayAreaEvent"
             AddHandler scheduler.CustomDrawDayViewAllDayArea, AddressOf scheduler_CustomDrawDayViewAllDayArea
             scheduler.ActiveViewType = SchedulerViewType.Day
             scheduler.GroupType = SchedulerGroupType.Resource
             scheduler.ActiveView.LayoutChanged()
-'            #End Region ' #CustomDrawDayViewAllDayAreaEvent
+            '            #End Region ' #CustomDrawDayViewAllDayAreaEvent
         End Sub
-        #Region "#@CustomDrawDayViewAllDayAreaEvent"
+#Region "#@CustomDrawDayViewAllDayAreaEvent"
         Public Shared Sub scheduler_CustomDrawDayViewAllDayArea(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
             Dim cell As AllDayAreaCell = CType(e.ObjectInfo, AllDayAreaCell)
             Dim resource As Resource = cell.Resource
@@ -167,10 +175,12 @@ Namespace SchedulerAPISample.CodeExamples
             ' Paint the area with the selected color.
             e.Cache.FillRectangle(brush, e.Bounds)
             ' Draw the percentage text. 
-            Dim format As New StringFormat()
-            format.LineAlignment = StringAlignment.Center
-            format.Alignment = StringAlignment.Center
-            e.Cache.DrawString(String.Format("{0:P}", percent), cell.Appearance.Font, Brushes.Black, e.Bounds, format)
+            Using format = New StringFormat()
+                format.LineAlignment = StringAlignment.Center
+                format.Alignment = StringAlignment.Center
+                e.Cache.DrawString(String.Format("{0:P}", percent), cell.Appearance.Font, Brushes.Black, e.Bounds, format)
+            End Using
+
             e.Handled = True
         End Sub
         Private Shared Function CalcCurrentWorkTimeLoad(ByVal apts As AppointmentBaseCollection, ByVal interval As TimeInterval, ByVal resource As Resource) As Single
@@ -182,20 +192,19 @@ Namespace SchedulerAPISample.CodeExamples
             Dim calc As New DevExpress.XtraScheduler.Tools.IntervalLoadRatioCalculator(interval, aptsByResource)
             Return calc.Calculate()
         End Function
-        #End Region ' #@CustomDrawDayViewAllDayAreaEvent
+#End Region ' #@CustomDrawDayViewAllDayAreaEvent
 
         Private Shared Sub CustomDrawDayViewTimeRulerEvent(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawDayViewTimeRulerEvent"
+            '            #Region "#CustomDrawDayViewTimeRulerEvent"
             AddHandler scheduler.CustomDrawDayViewTimeRuler, AddressOf scheduler_CustomDrawDayViewTimeRuler
             scheduler.ActiveView.LayoutChanged()
-'            #End Region ' #CustomDrawDayViewTimeRulerEvent
+            '            #End Region ' #CustomDrawDayViewTimeRulerEvent
         End Sub
 
-        #Region "#@CustomDrawDayViewTimeRulerEvent"
+#Region "#@CustomDrawDayViewTimeRulerEvent"
         Public Shared Sub scheduler_CustomDrawDayViewTimeRuler(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
             Dim info As TimeRulerViewInfo = TryCast(e.ObjectInfo, TimeRulerViewInfo)
             ' Clear all captions.
-            Dim item As Object
             For Each item In info.Items
                 Dim viewInfoText As ViewInfoTextItem = TryCast(item, ViewInfoTextItem)
                 If viewInfoText IsNot Nothing Then
@@ -205,40 +214,40 @@ Namespace SchedulerAPISample.CodeExamples
             ' Draw the TimeRuler as usual, but with empty captions.
             e.DrawDefault()
             ' Draw the image in the header.
-            Dim im As Image = Image.FromFile("image.png")
-            Dim imageBounds As New Rectangle(info.HeaderBounds.X, info.HeaderBounds.Y, im.Width, im.Height)
-            e.Cache.Graphics.DrawImage(im, imageBounds)
+            Dim img As Image = Image.FromFile("image.png")
+            Dim imageBounds As New Rectangle(info.HeaderBounds.X, info.HeaderBounds.Y, img.Width, img.Height)
+            e.Cache.DrawImage(img, imageBounds)
             ' Cancel default painting procedure.
             e.Handled = True
         End Sub
-        #End Region ' #@CustomDrawDayViewTimeRulerEvent
+#End Region ' #@CustomDrawDayViewTimeRulerEvent
 
         Private Shared Sub CustomDrawGroupSeparator(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawGroupSeparatorEvent"
+            '            #Region "#CustomDrawGroupSeparatorEvent"
             AddHandler scheduler.CustomDrawGroupSeparator, AddressOf scheduler_CustomDrawGroupSeparator
             scheduler.GroupType = SchedulerGroupType.Resource
             scheduler.ActiveView.LayoutChanged()
-'            #End Region ' #CustomDrawGroupSeparatorEvent
+            '            #End Region ' #CustomDrawGroupSeparatorEvent
         End Sub
 
-        #Region "#@CustomDrawGroupSeparatorEvent"
+#Region "#@CustomDrawGroupSeparatorEvent"
         Public Shared Sub scheduler_CustomDrawGroupSeparator(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
             e.DrawDefault()
-            Dim im As Image = Image.FromFile("image.png")
-            Dim imageBounds As New Rectangle(e.Bounds.X - (im.Width \ 2), e.Bounds.Y, im.Width, im.Height)
-            e.Cache.Graphics.DrawImage(im, imageBounds)
+            Dim img As Image = Image.FromFile("image.png")
+            Dim imageBounds As New Rectangle(e.Bounds.X - (img.Width \ 2), e.Bounds.Y, img.Width, img.Height)
+            e.Cache.Graphics.DrawImage(img, imageBounds)
             e.Handled = True
         End Sub
-        #End Region ' #@CustomDrawGroupSeparatorEvent
+#End Region ' #@CustomDrawGroupSeparatorEvent
 
         Private Shared Sub CustomDrawNavigationButton(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawNavigationButtonEvent"
+            '            #Region "#CustomDrawNavigationButtonEvent"
             AddHandler scheduler.CustomDrawNavigationButton, AddressOf scheduler_CustomDrawNavigationButton
             scheduler.Services.DateTimeNavigation.NavigateBackward()
-'            #End Region ' #CustomDrawNavigationButtonEvent
+            '            #End Region ' #CustomDrawNavigationButtonEvent
         End Sub
 
-        #Region "#@CustomDrawNavigationButtonEvent"
+#Region "#@CustomDrawNavigationButtonEvent"
         Public Shared Sub scheduler_CustomDrawNavigationButton(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
             Dim navButton As NavigationButtonNext = TryCast(e.ObjectInfo, NavigationButtonNext)
             Dim scheduler As SchedulerControl = TryCast(sender, SchedulerControl)
@@ -257,7 +266,7 @@ Namespace SchedulerAPISample.CodeExamples
                 navButton.DisplayTextItem.Text = String.Format("Next {0} appointments", aptCount)
             End If
         End Sub
-        #End Region ' #@CustomDrawNavigationButtonEvent
+#End Region ' #@CustomDrawNavigationButtonEvent
 
         Private Shared Sub CustomDrawResourceHeader(ByVal scheduler As SchedulerControl)
             '            #Region "#CustomDrawResourceHeaderEvent"
@@ -271,10 +280,10 @@ Namespace SchedulerAPISample.CodeExamples
             scheduler.OptionsView.ResourceHeaders.Height = 50
             scheduler.GroupType = SchedulerGroupType.Resource
             AddHandler scheduler.CustomDrawResourceHeader, AddressOf scheduler_CustomDrawResourceHeader
-'            #End Region ' #CustomDrawResourceHeaderEvent
+            '            #End Region ' #CustomDrawResourceHeaderEvent
         End Sub
 
-        #Region "#@CustomDrawResourceHeaderEvent"
+#Region "#@CustomDrawResourceHeaderEvent"
         Public Shared Sub scheduler_CustomDrawResourceHeader(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
             Dim header As ResourceHeader = CType(e.ObjectInfo, ResourceHeader)
             ' Get the resource information from custom fields.
@@ -283,22 +292,22 @@ Namespace SchedulerAPISample.CodeExamples
             ' Specify the header caption and appearance.
             header.Appearance.HeaderCaption.ForeColor = Color.Blue
             header.Caption = header.Resource.Caption & System.Environment.NewLine & address & System.Environment.NewLine & postcode
-            header.Appearance.HeaderCaption.Font = e.Cache.GetFont(header.Appearance.HeaderCaption.Font, FontStyle.Bold)
+            header.Appearance.HeaderCaption.FontStyleDelta = FontStyle.Bold
             ' Draw the header using default methods.
             e.DrawDefault()
             e.Handled = True
         End Sub
-        #End Region ' #@CustomDrawResourceHeaderEvent
+#End Region ' #@CustomDrawResourceHeaderEvent
 
         Private Shared Sub CustomDrawTimeCell(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawTimeCellEvent"
+            '            #Region "#CustomDrawTimeCellEvent"
             AddHandler scheduler.CustomDrawTimeCell, AddressOf scheduler_CustomDrawTimeCell
             scheduler.DayView.DayCount = 3
             scheduler.ActiveViewType = SchedulerViewType.Day
-'            #End Region ' #CustomDrawTimeCellEvent
+            '            #End Region ' #CustomDrawTimeCellEvent
         End Sub
 
-        #Region "#@CustomDrawTimeCellEvent"
+#Region "#@CustomDrawTimeCellEvent"
         Public Shared Sub scheduler_CustomDrawTimeCell(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
             ' Get the cell to draw.
             Dim cell As SelectableIntervalViewInfo = TryCast(e.ObjectInfo, SelectableIntervalViewInfo)
@@ -309,18 +318,18 @@ Namespace SchedulerAPISample.CodeExamples
             End If
             e.Handled = True
         End Sub
-        #End Region ' #@CustomDrawTimeCellEvent
+#End Region ' #@CustomDrawTimeCellEvent
 
         Public Shared Sub CustomDrawWeekViewTopLeftCorner(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawWeekViewTopLeftCornerEvent"
+            '            #Region "#CustomDrawWeekViewTopLeftCornerEvent"
             scheduler.ActiveViewType = SchedulerViewType.Timeline
             scheduler.GroupType = SchedulerGroupType.Date
             scheduler.OptionsView.ResourceHeaders.Height = 50
             AddHandler scheduler.CustomDrawWeekViewTopLeftCorner, AddressOf scheduler_CustomDrawWeekViewTopLeftCorner
-'            #End Region ' #CustomDrawWeekViewTopLeftCornerEvent
+            '            #End Region ' #CustomDrawWeekViewTopLeftCornerEvent
         End Sub
 
-        #Region "#@CustomDrawWeekViewTopLeftCornerEvent"
+#Region "#@CustomDrawWeekViewTopLeftCornerEvent"
         Public Shared Sub scheduler_CustomDrawWeekViewTopLeftCorner(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
             e.DrawDefault()
             Dim objectToDraw As UpperLeftCorner = TryCast(e.ObjectInfo, UpperLeftCorner)
@@ -329,30 +338,29 @@ Namespace SchedulerAPISample.CodeExamples
             Dim myFont As Font = objectToDraw.CaptionAppearance.Font
             Dim textSize As SizeF = e.Graphics.MeasureString(text, myFont)
             e.Graphics.TranslateTransform(e.Bounds.Width \ 2, e.Bounds.Height \ 2)
-            e.Graphics.RotateTransform(-45F)
+            e.Graphics.RotateTransform(-45.0F)
             e.Graphics.DrawString(text, myFont, Brushes.Blue, -(textSize.Width / 2.0F), -(textSize.Height / 2.0F))
-            e.Graphics.RotateTransform(45F)
+            e.Graphics.RotateTransform(45.0F)
             e.Graphics.TranslateTransform(-e.Bounds.Width \ 2, -e.Bounds.Height \ 2)
             e.Handled = True
         End Sub
-        #End Region ' #@CustomDrawWeekViewTopLeftCornerEvent
+#End Region ' #@CustomDrawWeekViewTopLeftCornerEvent
 
         Public Shared Sub CustomDrawTimeIndicator(ByVal scheduler As SchedulerControl)
-'            #Region "#CustomDrawTimeIndicatorEvent"
+            '            #Region "#CustomDrawTimeIndicatorEvent"
             scheduler.ActiveViewType = SchedulerViewType.Day
             scheduler.DayView.TopRowTime = New TimeSpan(Date.Now.Hour, 0, 0)
             scheduler.DayView.TimeIndicatorDisplayOptions.ShowOverAppointment = True
             scheduler.GroupType = SchedulerGroupType.Date
             scheduler.OptionsView.ResourceHeaders.Height = 50
             AddHandler scheduler.CustomDrawTimeIndicator, AddressOf scheduler_CustomDrawTimeIndicator
-'            #End Region ' #CustomDrawTimeIndicatorEvent
+            '            #End Region ' #CustomDrawTimeIndicatorEvent
         End Sub
 
-        #Region "#@CustomDrawTimeIndicatorEvent"
+#Region "#@CustomDrawTimeIndicatorEvent"
         Public Shared Sub scheduler_CustomDrawTimeIndicator(ByVal sender As Object, ByVal e As DevExpress.XtraScheduler.CustomDrawObjectEventArgs)
             Dim info As TimeIndicatorViewInfo = TryCast(e.ObjectInfo, TimeIndicatorViewInfo)
             Dim scheduler As SchedulerControl = TryCast(sender, SchedulerControl)
-            Dim item As Object
             For Each item In info.Items
                 Dim timeIndicatorItem As TimeIndicatorBaseItem = TryCast(item, TimeIndicatorBaseItem)
                 If timeIndicatorItem IsNot Nothing Then
@@ -362,7 +370,7 @@ Namespace SchedulerAPISample.CodeExamples
                         boundsText = Rectangle.Inflate(timeIndicatorItem.Bounds, 0, 5)
                         boundsText.Offset((CInt(e.Graphics.ClipBounds.Width) \ 2), -10)
                     End If
-                    e.Cache.DrawString(info.Interval.Start.ToString(), scheduler.Appearance.HeaderCaption.Font, New SolidBrush(Color.Red), boundsText, scheduler.Appearance.HeaderCaption.GetStringFormat())
+                    e.Cache.DrawString(info.Interval.Start.ToString(), scheduler.Appearance.HeaderCaption.Font, Brushes.Red, boundsText, scheduler.Appearance.HeaderCaption.GetStringFormat())
                 End If
             Next item
             e.Handled = True
@@ -370,32 +378,34 @@ Namespace SchedulerAPISample.CodeExamples
 #End Region ' #@CustomDrawTimeIndicatorEvent
 
         Public Shared Sub CustomDrawFlyOut(ByVal scheduler As SchedulerControl)
-'			#Region "#CustomDrawFlyOutEvent"
-			scheduler.ActiveViewType = SchedulerViewType.FullWeek
-			AddHandler scheduler.CustomizeAppointmentFlyout, AddressOf scheduler_CustomizeAppointmentFlyout
-			AddHandler scheduler.CustomDrawAppointmentFlyoutSubject, AddressOf scheduler_CustomDrawAppointmentFlyoutSubject
-'			#End Region ' #CustomDrawFlyOutEvent
-		End Sub
+            '			#Region "#CustomDrawFlyOutEvent"
+            scheduler.ActiveViewType = SchedulerViewType.FullWeek
+            AddHandler scheduler.CustomizeAppointmentFlyout, AddressOf scheduler_CustomizeAppointmentFlyout
+            AddHandler scheduler.CustomDrawAppointmentFlyoutSubject, AddressOf scheduler_CustomDrawAppointmentFlyoutSubject
+            '			#End Region ' #CustomDrawFlyOutEvent
+        End Sub
 
-		#Region "#@CustomDrawFlyOutEvent"
-		Public Shared Sub scheduler_CustomizeAppointmentFlyout(ByVal sender As Object, ByVal e As CustomizeAppointmentFlyoutEventArgs)
-			e.ShowSubject = True
-			e.Subject = String.Format("{0} - {1:f}", e.Subject.Split()(0), e.Start)
-			e.SubjectAppearance.Font = New Font("Segoe UI", 10F)
-			e.ShowReminder = False
-			e.ShowLocation = False
-			e.ShowEndDate = False
-			e.ShowStartDate = False
-			e.ShowStatus = True
-			e.Appearance.BackColor = Color.Gray
-		End Sub
-		Public Shared Sub scheduler_CustomDrawAppointmentFlyoutSubject(ByVal sender As Object, ByVal e As CustomDrawAppointmentFlyoutSubjectEventArgs)
-			e.Cache.FillRectangle(Brushes.White, e.Bounds)
-			e.DrawStatusDefault()
-			e.Cache.DrawString("Please note", New Font("Verdana", 12F), Brushes.Blue, New Rectangle(e.Bounds.X + 50, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height), StringFormat.GenericTypographic)
-			e.Handled = True
-		End Sub
-		#End Region ' #@CustomDrawFlyOutEvent
+#Region "#@CustomDrawFlyOutEvent"
+        Private Shared ReadOnly flyoutFont As New Font("Segoe UI", 10.0F)
+        Public Shared Sub scheduler_CustomizeAppointmentFlyout(ByVal sender As Object, ByVal e As CustomizeAppointmentFlyoutEventArgs)
+            e.ShowSubject = True
+            e.Subject = String.Format("{0} - {1:f}", e.Subject.Split()(0), e.Start)
+            e.SubjectAppearance.Font = flyoutFont
+            e.ShowReminder = False
+            e.ShowLocation = False
+            e.ShowEndDate = False
+            e.ShowStartDate = False
+            e.ShowStatus = True
+            e.Appearance.BackColor = Color.Gray
+        End Sub
+        Private Shared ReadOnly textFont As New Font("Verdana", 12.0F)
+        Public Shared Sub scheduler_CustomDrawAppointmentFlyoutSubject(ByVal sender As Object, ByVal e As CustomDrawAppointmentFlyoutSubjectEventArgs)
+            e.Cache.FillRectangle(Brushes.White, e.Bounds)
+            e.DrawStatusDefault()
+            e.Cache.DrawString("Please note", textFont, Brushes.Blue, New Rectangle(e.Bounds.X + 50, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height), StringFormat.GenericTypographic)
+            e.Handled = True
+        End Sub
+#End Region ' #@CustomDrawFlyOutEvent
 
     End Class
 End Namespace
